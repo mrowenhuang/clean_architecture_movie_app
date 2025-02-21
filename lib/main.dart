@@ -1,4 +1,5 @@
-import 'package:clean_architecture_movie_app/features/movie/presentation/top_rated_movie/home_page.dart';
+import 'package:clean_architecture_movie_app/core/configs/app_theme.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/top_rated_movie/pages/home_page.dart';
 import 'package:clean_architecture_movie_app/injection.dart';
 import 'package:flutter/material.dart';
 
@@ -14,11 +15,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: AppTheme.appTheme,
       title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
       home: const HomePage(),
     );
   }

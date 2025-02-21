@@ -24,51 +24,51 @@ class FilmModels extends FilmEntities {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'backdropPath': backdropPath,
-      'genreIds': genreIds?.map((e) => e).toList(),
+      'backdrop_path': backdropPath,
+      'genre_ids': genreIds?.map((e) => e).toList(),
       'id': id,
-      'originalLanguage': originalLanguage,
-      'originalTitle': originalTitle,
+      'original_language': originalLanguage,
+      'original_title': originalTitle,
       'overview': overview,
       'popularity': popularity,
-      'posterPath': posterPath,
-      'releaseDate': releaseDate,
+      'poster_path': posterPath,
+      'release_date': releaseDate,
       'title': title,
       'description': description,
       'video': video,
       'fav': fav,
-      'voteAverage': voteAverage,
-      'voteCount': voteCount,
+      'vote_average': voteAverage,
+      'vote_count': voteCount,
     };
   }
 
   factory FilmModels.fromMap(Map<String, dynamic> map) {
     return FilmModels(
       backdropPath:
-          map['backdropPath'] != null ? map['backdropPath'] as String : null,
-      genreIds: map['genreIds'] != null
-          ? List<int>.from(map['genreIds'] as List<dynamic>)
+          map['backdrop_path'] != null ? map['backdrop_path'] as String : null,
+      genreIds: map['genre_ids'] != null
+          ? List<int>.from(map['genre_ids'] as List<dynamic>)
           : null,
       id: map['id'] != null ? map['id'] as int : null,
-      originalLanguage: map['originalLanguage'] != null
-          ? map['originalLanguage'] as String
+      originalLanguage: map['original_language'] != null
+          ? map['original_language'] as String
           : null,
       originalTitle:
-          map['originalTitle'] != null ? map['originalTitle'] as String : null,
+          map['original_title'] != null ? map['original_title'] as String : null,
       overview: map['overview'] != null ? map['overview'] as String : null,
       popularity: map['popularity'] != null ? map['popularity'] as double : null,
       posterPath:
-          map['posterPath'] != null ? map['posterPath'] as String : null,
+          map['poster_path'] != null ? map['poster_path'] as String : null,
       releaseDate:
-          map['releaseDate'] != null ? map['releaseDate'] as String : null,
+          map['release_date'] != null ? map['release_date'] as String : null,
       title: map['title'] != null ? map['title'] as String : null,
       description:
           map['description'] != null ? map['description'] as String : null,
       video: map['video'] != null ? map['video'] as bool : null,
       fav: map['fav'] != null ? map['fav'] as bool : null,
       voteAverage:
-          map['voteAverage'] != null ? map['voteAverage'] as double : null,
-      voteCount: map['voteCount'] != null ? map['voteCount'] as int : null,
+          map['vote_average'] != null ? map['vote_average'] as double : null,
+      voteCount: map['vote_count'] != null ? map['vote_count'] as int : null,
     );
   }
 
