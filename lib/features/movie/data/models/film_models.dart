@@ -56,7 +56,7 @@ class FilmModels extends FilmEntities {
       originalTitle:
           map['originalTitle'] != null ? map['originalTitle'] as String : null,
       overview: map['overview'] != null ? map['overview'] as String : null,
-      popularity: map['popularity'] != null ? map['popularity'] as int : null,
+      popularity: map['popularity'] != null ? map['popularity'] as double : null,
       posterPath:
           map['posterPath'] != null ? map['posterPath'] as String : null,
       releaseDate:
@@ -67,7 +67,7 @@ class FilmModels extends FilmEntities {
       video: map['video'] != null ? map['video'] as bool : null,
       fav: map['fav'] != null ? map['fav'] as bool : null,
       voteAverage:
-          map['voteAverage'] != null ? map['voteAverage'] as int : null,
+          map['voteAverage'] != null ? map['voteAverage'] as double : null,
       voteCount: map['voteCount'] != null ? map['voteCount'] as int : null,
     );
   }

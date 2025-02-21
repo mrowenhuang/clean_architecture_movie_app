@@ -8,14 +8,14 @@ class FilmEntities extends Equatable {
   String? originalLanguage;
   String? originalTitle;
   String? overview;
-  int? popularity;
+  double? popularity;
   String? posterPath;
   String? releaseDate;
   String? title;
   String? description;
   bool? video;
   bool? fav = false;
-  int? voteAverage;
+  double? voteAverage;
   int? voteCount;
 
   FilmEntities({
