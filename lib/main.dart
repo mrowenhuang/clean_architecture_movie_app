@@ -1,7 +1,9 @@
-import 'package:clean_architecture_movie_app/features/movie/presentation/home_page.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/top_rated_movie/home_page.dart';
+import 'package:clean_architecture_movie_app/injection.dart';
 import 'package:flutter/material.dart';
 
-void main() {
+void main() async {
+  await initializeDependecies();
   runApp(const MyApp());
 }
 
