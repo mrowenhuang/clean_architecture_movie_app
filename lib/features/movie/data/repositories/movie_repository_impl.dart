@@ -22,4 +22,29 @@ class MovieRepositoryImpl implements MovieRepository {
       );
     }
   }
+
+  @override
+  Future<Either<ServerFailure, List<FilmEntities>>> getPopularMovies() async {
+    try {
+      final List<FilmEntities> film =
+          await _remoteDataSorces.getPopularMovies();
+      return right(film);
+    } catch (e) {
+      return left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<ServerFailure, List<FilmEntities>>> getSearchMovies(
+      String movieName,
+      {String page = "1"}) async {
+    try {
+      final List<FilmEntities> film =
+          await _remoteDataSorces.getSearchMovies(movieName, page: page);
+
+      return right(film);
+    } catch (e) {
+      return left(ServerFailure());
+    }
+  }
 }

@@ -1,7 +1,7 @@
 import 'dart:async';
 
 import 'package:clean_architecture_movie_app/features/movie/domain/entities/film_entities.dart';
-import 'package:clean_architecture_movie_app/features/movie/domain/usecases/get_Top_rated_movies.dart';
+import 'package:clean_architecture_movie_app/features/movie/domain/usecases/get_top_rated_movies.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

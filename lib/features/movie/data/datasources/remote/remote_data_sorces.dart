@@ -6,6 +6,8 @@ import 'package:dio/dio.dart';
 
 abstract class RemoteDataSorces {
   Future<List<FilmModels>> getTopRatedMovies();
+  Future<List<FilmModels>> getPopularMovies();
+  Future<List<FilmModels>> getSearchMovies(String movieName, {String page = "1"});
 }
 
 class RemoteDataSorcesImpl implements RemoteDataSorces {
@@ -27,4 +29,36 @@ class RemoteDataSorcesImpl implements RemoteDataSorces {
     }
   }
 
+  @override
+  Future<List<FilmModels>> getPopularMovies() async {
+    final response = await _dioConn.get(ApiNetwork.popular);
+    if (response.statusCode == 200) {
+      final List<FilmModels> filmData = (response.data['results'] as List).map(
+        (film) {
+          return FilmModels.fromMap(film);
+        },
+      ).toList();
+      return filmData;
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<List<FilmModels>> getSearchMovies(String movieName,
+      {String page = "1"}) async {
+    final response =
+        await _dioConn.get(ApiNetwork.searchMovie(movieName, page: page));
+
+    if (response.statusCode == 200) {
+      final List<FilmModels> filmData = (response.data['results'] as List).map(
+        (film) {
+          return FilmModels.fromMap(film);
+        },
+      ).toList();
+      return filmData;
+    } else {
+      throw ServerException();
+    }
+  }
 }

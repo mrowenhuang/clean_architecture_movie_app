@@ -26,12 +26,88 @@ class HomePage extends StatelessWidget {
               );
             } else if (state.runtimeType == TopRatedMovieSuccessState) {
               state as TopRatedMovieSuccessState;
-              return ListView.builder(
-                itemCount: state.films.length,
-                itemBuilder: (context, index) {
-                  var data = state.films[index];
-                  return ListTile(
-                    title: Text(data.originalTitle.toString()),
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  return Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Welcome\n19-03-2025',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: AppColor.primary,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        Align(
+                          alignment: Alignment.topRight,
+                          child: SizedBox(
+                            width: constraints.maxWidth / 2,
+                            child: TextField(
+                              style: const TextStyle(color: AppColor.primary),
+                              cursorColor: AppColor.primary,
+                              decoration: InputDecoration(
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    color: AppColor.primary,
+                                    width: 2,
+                                  ),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                  borderSide: const BorderSide(
+                                    color: AppColor.primary,
+                                    width: 2,
+                                  ),
+                                ),
+                                fillColor: Colors.white,
+                                filled: true,
+                                hintText: "Search",
+                                hintStyle: const TextStyle(
+                                  color: AppColor.primary,
+                                ),
+                                suffixIcon: const Icon(
+                                  Icons.search,
+                                  color: AppColor.primary,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        const Text.rich(
+                          TextSpan(
+                            text: "Watch List ",
+                            style: TextStyle(
+                              color: AppColor.secondary,
+                              fontSize: 16,
+                            ),
+                            children: [
+                              TextSpan(
+                                text: "- 19-03-2025",
+                                style: TextStyle(
+                                  color: AppColor.primary,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        // SizedBox(
+                        //   width: constraints.maxWidth,
+                        //   height: 200,
+                        //   child: ListView.builder(
+                        //     itemBuilder: (context, index) {
+                        //       return Container();
+                        //     },
+                        //   ),
+                        // )
+                      ],
+                    ),
                   );
                 },
               );
