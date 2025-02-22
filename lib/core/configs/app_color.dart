@@ -6,7 +6,7 @@ class AppColor {
   static const Color tertiary = Color(0xff404B69);
   static const Color quaternary = Color(0xff283149);
   static const Color def = Color(0xffffffff);
-  static const Color shadow = Color.fromARGB(35, 0, 0, 0);
+  static const Color shadow = Color.fromARGB(100, 0, 0, 0);
 
   static const bgColor = LinearGradient(
     colors: [quaternary, tertiary],

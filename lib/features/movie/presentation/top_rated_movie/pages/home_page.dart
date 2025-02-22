@@ -12,26 +12,39 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          decoration: const BoxDecoration(
-            gradient: AppColor.bgColor,
-          ),
-          child: BlocBuilder<TopRatedMovieBloc, TopRatedMovieState>(
-            bloc: sl<TopRatedMovieBloc>()..add(GetTopRatedMovie()),
-            builder: (context, state) {
-              if (state.runtimeType == TopRatedMovieLoadingState) {
-                return const Center(
-                  child: CupertinoActivityIndicator(
-                    color: Colors.white,
-                  ),
-                );
-              } else if (state.runtimeType == TopRatedMovieSuccessState) {
-                state as TopRatedMovieSuccessState;
-                return LayoutBuilder(
-                  builder: (context, constraints) {
-                    return Padding(
-                      padding: const EdgeInsets.all(20),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   onTap: (value) {
+      //     print(value);
+      //   },
+
+      //   items: [
+      //     BottomNavigationBarItem(icon: Icon(Icons.abc), label: "page1"),
+      //     BottomNavigationBarItem(icon: Icon(Icons.abc), label: "page2"),
+      //     BottomNavigationBarItem(icon: Icon(Icons.abc), label: "page3"),
+      //     BottomNavigationBarItem(icon: Icon(Icons.abc), label: "page4"),
+      //   ],
+      // ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: AppColor.bgColor,
+        ),
+        child: BlocBuilder<TopRatedMovieBloc, TopRatedMovieState>(
+          bloc: sl<TopRatedMovieBloc>()..add(GetTopRatedMovie()),
+          builder: (context, state) {
+            if (state.runtimeType == TopRatedMovieLoadingState) {
+              return const Center(
+                child: CupertinoActivityIndicator(
+                  color: Colors.white,
+                ),
+              );
+            } else if (state.runtimeType == TopRatedMovieSuccessState) {
+              state as TopRatedMovieSuccessState;
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  return SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                          left: 20, right: 20, top: 40, bottom: 20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -251,23 +264,173 @@ class HomePage extends StatelessWidget {
                                           color: AppColor.secondary,
                                           fontSize: 11,
                                         ),
-                                      )
+                                      ),
                                     ],
                                   ),
                                 );
                               },
                             ),
                           ),
-                          
+                          const SizedBox(height: 10),
+                          const Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                "Popular",
+                                style: TextStyle(
+                                  color: AppColor.secondary,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              Text(
+                                "See More",
+                                style: TextStyle(
+                                  color: AppColor.secondary,
+                                  fontSize: 14,
+                                  decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20),
+                          SizedBox(
+                            height: 280,
+                            child: ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: 5,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.only(bottom: 10),
+                                  child: Container(
+                                    padding: const EdgeInsets.all(5),
+                                    width: constraints.maxWidth,
+                                    height: 200,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(15),
+                                      color: AppColor.secondary,
+                                    ),
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(left: 20),
+                                          child: DecoratedBox(
+                                            decoration: BoxDecoration(
+                                              color: Colors.white,
+                                              boxShadow: const [
+                                                BoxShadow(
+                                                  color: AppColor.shadow,
+                                                  blurRadius: 10,
+                                                  offset: Offset(-10, 10),
+                                                )
+                                              ],
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                            ),
+                                            child: ClipRRect(
+                                              borderRadius:
+                                                  BorderRadius.circular(10),
+                                              child: CachedNetworkImage(
+                                                imageUrl:
+                                                    "https://picsum.photos/id/24$index/200/300",
+                                                placeholder: (context, url) {
+                                                  return const Center(
+                                                    child:
+                                                        CupertinoActivityIndicator(
+                                                      color: AppColor.primary,
+                                                    ),
+                                                  );
+                                                },
+                                                fit: BoxFit.fill,
+                                                width: 100,
+                                                height: 160,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                right: 15, top: 20, left: 20),
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
+                                                  children: [
+                                                    const Text(
+                                                      "Movie Name",
+                                                      style: TextStyle(
+                                                        color: AppColor.primary,
+                                                        fontSize: 14,
+                                                      ),
+                                                    ),
+                                                    Container(
+                                                      width: 40,
+                                                      height: 20,
+                                                      decoration: BoxDecoration(
+                                                        color: AppColor.primary,
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(
+                                                          5,
+                                                        ),
+                                                      ),
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: const Icon(
+                                                        Icons
+                                                            .more_horiz_outlined,
+                                                        color:
+                                                            AppColor.secondary,
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                                const SizedBox(height: 5),
+                                                const Text(
+                                                  "Gemre",
+                                                  style: TextStyle(
+                                                    color: AppColor.primary,
+                                                    fontSize: 11,
+                                                  ),
+                                                ),
+                                                const SizedBox(height: 15),
+                                                const Text(
+                                                  "is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and ",
+                                                  maxLines: 7,
+                                                  textAlign: TextAlign.justify,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  style: TextStyle(
+                                                    fontSize: 11,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
+                          )
                         ],
                       ),
-                    );
-                  },
-                );
-              }
-              return const SizedBox();
-            },
-          ),
+                    ),
+                  );
+                },
+              );
+            }
+            return const SizedBox();
+          },
         ),
       ),
     );
