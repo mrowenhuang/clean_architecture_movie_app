@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
-import 'package:clean_architecture_movie_app/features/movie/presentation/top_rated_movie/bloc/top_rated_movie_bloc.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/top_rated_movie/top_rated_movie_bloc.dart';
 import 'package:clean_architecture_movie_app/injection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+class HomeMoviePage extends StatelessWidget {
+  const HomeMoviePage({super.key});
 
   @override
   Widget build(BuildContext context) {
