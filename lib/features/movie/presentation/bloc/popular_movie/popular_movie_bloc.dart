@@ -16,7 +16,7 @@ class PopularMovieBloc extends Bloc<PopularMovieEvent, PopularMovieState> {
   }
 
   FutureOr<void> getPopularMovie(
-      PopularMovieEvent event, Emitter<PopularMovieState> emit) async {
+      GetPopularMovie event, Emitter<PopularMovieState> emit) async {
     emit(PopularMovieLoadingState());
 
     final response = await _getPopularMovies.call();

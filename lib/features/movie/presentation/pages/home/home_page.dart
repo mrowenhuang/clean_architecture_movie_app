@@ -12,7 +12,7 @@ class HomePage extends StatelessWidget {
 
   final List page = [
     const HomeMoviePage(),
-    const SearchPage(),
+    SearchPage(),
     const PopularPage(),
   ];
 

@@ -2,11 +2,15 @@ import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
 import 'package:flutter/material.dart';
 
 class SearchField extends StatelessWidget {
-  const SearchField({super.key});
+  const SearchField({super.key, required this.textEditingController, required this.onChange});
+
+  final TextEditingController textEditingController;
+  final ValueChanged<String>? onChange;
 
   @override
   Widget build(BuildContext context) {
     return TextField(
+      controller: textEditingController,
       style: const TextStyle(color: AppColor.primary),
       cursorColor: AppColor.primary,
       decoration: InputDecoration(
@@ -35,7 +39,9 @@ class SearchField extends StatelessWidget {
           Icons.search,
           color: AppColor.primary,
         ),
+        
       ),
+      onChanged: onChange,
     );
   }
 }

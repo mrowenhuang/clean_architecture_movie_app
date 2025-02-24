@@ -15,98 +15,96 @@ class HomeMoviePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(
-          gradient: AppColor.bgColor,
-        ),
-        child: LayoutBuilder(
-          builder: (context, constraints) {
-            return SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 20,
-                  right: 20,
-                  top: 40,
-                  bottom: 20,
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Welcome\n19-03-2025',
+      body: SingleChildScrollView(
+        child: Container(
+          padding: const EdgeInsets.only(
+            left: 20,
+            right: 20,
+            top: 40,
+            bottom: 20,
+          ),
+          decoration: const BoxDecoration(
+            gradient: AppColor.bgColor,
+          ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Welcome\n19-03-2025',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: AppColor.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  _search(context),
+                  const SizedBox(height: 15),
+                  const Text.rich(
+                    TextSpan(
+                      text: "Watch List ",
                       style: TextStyle(
-                        fontSize: 20,
-                        color: AppColor.primary,
-                        fontWeight: FontWeight.bold,
+                        color: AppColor.secondary,
+                        fontSize: 16,
                       ),
-                    ),
-                    _search(context),
-                    const SizedBox(height: 15),
-                    const Text.rich(
-                      TextSpan(
-                        text: "Watch List ",
-                        style: TextStyle(
-                          color: AppColor.secondary,
-                          fontSize: 16,
-                        ),
-                        children: [
-                          TextSpan(
-                            text: "- 19-03-2025",
-                            style: TextStyle(
-                              color: AppColor.primary,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    _watchList(context, constraints),
-                    const SizedBox(height: 20),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        SmallText(
-                          text: "Top Rated",
-                          fontsize: 16,
-                        ),
-                        Text(
-                          "See More",
+                        TextSpan(
+                          text: "- 19-03-2025",
                           style: TextStyle(
-                            color: AppColor.secondary,
-                            fontSize: 14,
-                            decoration: TextDecoration.underline,
+                            color: AppColor.primary,
+                            fontWeight: FontWeight.bold,
                           ),
                         )
                       ],
                     ),
-                    const SizedBox(height: 10),
-                    _topRated(context, constraints),
-                    const SizedBox(height: 10),
-                    const Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        SmallText(
-                          text: "Popular",
-                          fontsize: 16,
+                  ),
+                  const SizedBox(height: 10),
+                  _watchList(context, constraints),
+                  const SizedBox(height: 20),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SmallText(
+                        text: "Top Rated",
+                        fontsize: 16,
+                      ),
+                      Text(
+                        "See More",
+                        style: TextStyle(
+                          color: AppColor.secondary,
+                          fontSize: 14,
+                          decoration: TextDecoration.underline,
                         ),
-                        Text(
-                          "See More",
-                          style: TextStyle(
-                            color: AppColor.secondary,
-                            fontSize: 14,
-                            decoration: TextDecoration.underline,
-                          ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  _topRated(context, constraints),
+                  const SizedBox(height: 10),
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SmallText(
+                        text: "Popular",
+                        fontsize: 16,
+                      ),
+                      Text(
+                        "See More",
+                        style: TextStyle(
+                          color: AppColor.secondary,
+                          fontSize: 14,
+                          decoration: TextDecoration.underline,
                         ),
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-                    _popular(context, constraints),
-                  ],
-                ),
-              ),
-            );
-          },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20),
+                  _popular(context, constraints),
+                ],
+              );
+            },
+          ),
         ),
       ),
     );
@@ -118,7 +116,7 @@ class HomeMoviePage extends StatelessWidget {
       child: SizedBox(
         width: 200,
         height: 40,
-        child: SearchField(),
+        // child: SearchField(),
       ),
     );
   }

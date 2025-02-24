@@ -1,5 +1,6 @@
 import 'package:clean_architecture_movie_app/core/configs/app_theme.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/page_control/cubit/page_control_cubit.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/search_movie/search_movie_bloc.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/pages/home/home_page.dart';
 import 'package:clean_architecture_movie_app/injection.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +17,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => sl<PageControlCubit>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => sl<SearchMovieBloc>()),
+        BlocProvider(create: (context) => sl<PageControlCubit>()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: AppTheme.appTheme(context),
