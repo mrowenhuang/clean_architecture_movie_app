@@ -21,9 +21,7 @@ class TopRatedMovieErrorState extends TopRatedMovieState {
 
   @override
   // TODO: implement props
-  List<Object?> get props => [
-    message
-  ];
+  List<Object?> get props => [message];
 }
 
 class TopRatedMovieSuccessState extends TopRatedMovieState {
