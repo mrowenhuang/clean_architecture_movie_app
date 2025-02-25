@@ -24,6 +24,7 @@ class HomePage extends StatelessWidget {
           body: page[state],
           bottomNavigationBar: GNav(
             backgroundColor: AppColor.quaternary,
+            selectedIndex: state,
             onTabChange: (value) {
               context.read<PageControlCubit>().numberOfPage(value);
             },

@@ -2,10 +2,10 @@ import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
 import 'package:flutter/material.dart';
 
 class SearchField extends StatelessWidget {
-  const SearchField({super.key, required this.textEditingController, required this.onChange});
+  const SearchField({super.key, required this.textEditingController, required this.onSubmmited});
 
   final TextEditingController textEditingController;
-  final ValueChanged<String>? onChange;
+  final ValueChanged<String>? onSubmmited;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class SearchField extends StatelessWidget {
             width: 2,
           ),
         ),
-        fillColor: Colors.white,
+        fillColor: AppColor.def,
         filled: true,
         hintText: "Search",
         hintStyle: const TextStyle(
@@ -41,7 +41,7 @@ class SearchField extends StatelessWidget {
         ),
         
       ),
-      onChanged: onChange,
+      onSubmitted: onSubmmited,
     );
   }
 }

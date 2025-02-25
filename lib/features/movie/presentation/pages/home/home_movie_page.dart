@@ -1,8 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:clean_architecture_movie_app/common/navigator/app_navigator.dart';
 import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/page_control/cubit/page_control_cubit.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/popular_movie/popular_movie_bloc.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/top_rated_movie/top_rated_movie_bloc.dart';
-import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/search_field.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/small_text.dart';
 import 'package:clean_architecture_movie_app/injection.dart';
 import 'package:flutter/cupertino.dart';
@@ -14,8 +15,8 @@ class HomeMoviePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
+    return 
+      SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.only(
             left: 20,
@@ -39,7 +40,12 @@ class HomeMoviePage extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  _search(context),
+                  _search(
+                    context,
+                    () {
+                      context.read<PageControlCubit>().numberOfPage(1);
+                    },
+                  ),
                   const SizedBox(height: 15),
                   const Text.rich(
                     TextSpan(
@@ -106,17 +112,38 @@ class HomeMoviePage extends StatelessWidget {
             },
           ),
         ),
-      ),
+      
     );
   }
 
-  Widget _search(BuildContext context) {
-    return const Align(
+  Widget _search(BuildContext context, VoidCallback onTap) {
+    return Align(
       alignment: Alignment.topRight,
-      child: SizedBox(
-        width: 200,
-        height: 40,
-        // child: SearchField(),
+      child: ElevatedButton.icon(
+        onPressed: onTap,
+        label: const Text(
+          "Search",
+          style: TextStyle(color: AppColor.primary),
+        ),
+        icon: const Icon(
+          Icons.search,
+          color: AppColor.primary,
+        ),
+        iconAlignment: IconAlignment.end,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColor.secondary,
+          padding: const EdgeInsets.symmetric(
+            horizontal: 12,
+            vertical: 17,
+          ),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+            side: const BorderSide(
+              color: AppColor.primary,
+              width: 1,
+            ),
+          ),
+        ),
       ),
     );
   }

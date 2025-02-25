@@ -15,7 +15,7 @@ final class SearchMovieLoadingState extends SearchMovieState {
 }
 
 final class SearchMovieSuccesState extends SearchMovieState {
-  final List<FilmEntities> films;
+  final SearchFilmEnities films;
 
   SearchMovieSuccesState({required this.films});
 
