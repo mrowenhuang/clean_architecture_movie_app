@@ -1,11 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clean_architecture_movie_app/common/navigator/app_navigator.dart';
 import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
+import 'package:clean_architecture_movie_app/core/configs/app_theme.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/page_control/cubit/page_control_cubit.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/popular_movie/popular_movie_bloc.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/top_rated_movie/top_rated_movie_bloc.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/pages/detail/detail_movie.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/pages/popular/popular_page.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/pages/top_rated/top_rated_page.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/small_text.dart';
-import 'package:clean_architecture_movie_app/injection.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,15 +18,10 @@ class HomeMoviePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return 
-      SingleChildScrollView(
+    return Scaffold(
+      body: SingleChildScrollView(
         child: Container(
-          padding: const EdgeInsets.only(
-            left: 20,
-            right: 20,
-            top: 40,
-            bottom: 20,
-          ),
+          padding: AppTheme.defPadding,
           decoration: const BoxDecoration(
             gradient: AppColor.bgColor,
           ),
@@ -68,19 +66,24 @@ class HomeMoviePage extends StatelessWidget {
                   const SizedBox(height: 10),
                   _watchList(context, constraints),
                   const SizedBox(height: 20),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SmallText(
+                      const SmallText(
                         text: "Top Rated",
                         fontsize: 16,
                       ),
-                      Text(
-                        "See More",
-                        style: TextStyle(
-                          color: AppColor.secondary,
-                          fontSize: 14,
-                          decoration: TextDecoration.underline,
+                      GestureDetector(
+                        onTap: () {
+                          AppNavigator.push(context, const TopRatedPage());
+                        },
+                        child: const Text(
+                          "See More",
+                          style: TextStyle(
+                            color: AppColor.secondary,
+                            fontSize: 14,
+                            decoration: TextDecoration.underline,
+                          ),
                         ),
                       )
                     ],
@@ -88,19 +91,24 @@ class HomeMoviePage extends StatelessWidget {
                   const SizedBox(height: 10),
                   _topRated(context, constraints),
                   const SizedBox(height: 10),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      SmallText(
+                      const SmallText(
                         text: "Popular",
                         fontsize: 16,
                       ),
-                      Text(
-                        "See More",
-                        style: TextStyle(
-                          color: AppColor.secondary,
-                          fontSize: 14,
-                          decoration: TextDecoration.underline,
+                      GestureDetector(
+                        onTap: () {
+                          AppNavigator.push(context, const PopularPage());
+                        },
+                        child: const Text(
+                          "See More",
+                          style: TextStyle(
+                            color: AppColor.secondary,
+                            fontSize: 14,
+                            decoration: TextDecoration.underline,
+                          ),
                         ),
                       ),
                     ],
@@ -112,7 +120,7 @@ class HomeMoviePage extends StatelessWidget {
             },
           ),
         ),
-      
+      ),
     );
   }
 
@@ -133,8 +141,8 @@ class HomeMoviePage extends StatelessWidget {
         style: ElevatedButton.styleFrom(
           backgroundColor: AppColor.secondary,
           padding: const EdgeInsets.symmetric(
-            horizontal: 12,
-            vertical: 17,
+            horizontal: 15,
+            vertical: 10,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10),
@@ -229,7 +237,7 @@ class HomeMoviePage extends StatelessWidget {
       height: 170,
       width: constraints.maxWidth,
       child: BlocBuilder<TopRatedMovieBloc, TopRatedMovieState>(
-        bloc: sl<TopRatedMovieBloc>()..add(GetTopRatedMovie()),
+        bloc: context.read<TopRatedMovieBloc>(),
         builder: (context, state) {
           if (state.runtimeType == TopRatedMovieLoadingState) {
             return const Center(
@@ -294,7 +302,7 @@ class HomeMoviePage extends StatelessWidget {
     return SizedBox(
       height: 280,
       child: BlocBuilder<PopularMovieBloc, PopularMovieState>(
-        bloc: sl<PopularMovieBloc>()..add(GetPopularMovie()),
+        bloc: context.read<PopularMovieBloc>(),
         builder: (context, state) {
           if (state.runtimeType == PopularMovieLoadingState) {
             return const Center(
@@ -358,7 +366,10 @@ class HomeMoviePage extends StatelessWidget {
                         Expanded(
                           child: Padding(
                             padding: const EdgeInsets.only(
-                                right: 15, top: 20, left: 20),
+                              right: 15,
+                              top: 20,
+                              left: 20,
+                            ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -366,24 +377,38 @@ class HomeMoviePage extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    SmallText(
-                                      text: data.title.toString(),
-                                      fontsize: 14,
-                                      color: AppColor.primary,
-                                    ),
-                                    Container(
-                                      width: 40,
-                                      height: 20,
-                                      decoration: BoxDecoration(
+                                    SizedBox(
+                                      width: 150,
+                                      child: SmallText(
+                                        text: data.title.toString(),
+                                        fontsize: 14,
                                         color: AppColor.primary,
-                                        borderRadius: BorderRadius.circular(
-                                          5,
-                                        ),
+                                        align: TextAlign.left,
                                       ),
-                                      alignment: Alignment.center,
-                                      child: const Icon(
-                                        Icons.more_horiz_outlined,
-                                        color: AppColor.secondary,
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        AppNavigator.push(
+                                          context,
+                                          DetailMovie(
+                                            film: data,
+                                          ),
+                                        );
+                                      },
+                                      child: Container(
+                                        width: 40,
+                                        height: 20,
+                                        decoration: BoxDecoration(
+                                          color: AppColor.primary,
+                                          borderRadius: BorderRadius.circular(
+                                            5,
+                                          ),
+                                        ),
+                                        alignment: Alignment.center,
+                                        child: const Icon(
+                                          Icons.more_horiz_outlined,
+                                          color: AppColor.secondary,
+                                        ),
                                       ),
                                     ),
                                   ],

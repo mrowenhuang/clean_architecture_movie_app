@@ -1,4 +1,5 @@
 import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
+import 'package:clean_architecture_movie_app/core/configs/app_theme.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/search_movie/search_movie_bloc.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/custom_movie_list.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/search_field.dart';
@@ -13,52 +14,54 @@ class SearchPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: const BoxDecoration(gradient: AppColor.bgColor),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(15),
-              color: AppColor.secondary,
-              border: Border.all(
-                width: 1,
-                color: AppColor.primary,
+    return Scaffold(
+      body: Container(
+        padding: AppTheme.defPadding,
+        decoration: const BoxDecoration(gradient: AppColor.bgColor),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15),
+                color: AppColor.secondary,
+                border: Border.all(
+                  width: 1,
+                  color: AppColor.primary,
+                ),
+              ),
+              child: const Text(
+                "Search",
+                style: TextStyle(
+                  fontSize: 20,
+                  color: AppColor.primary,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
-            child: const Text(
-              "Search",
-              style: TextStyle(
-                fontSize: 20,
-                color: AppColor.primary,
-                fontWeight: FontWeight.bold,
+            const SizedBox(height: 20),
+            Align(
+              alignment: Alignment.topRight,
+              child: SizedBox(
+                width: 280,
+                height: 40,
+                child: SearchField(
+                  textEditingController: searchCont,
+                  onSubmmited: (value) {
+                    context.read<SearchMovieBloc>().add(
+                          GetSearchMovie(keyword: value),
+                        );
+                  },
+                ),
               ),
             ),
-          ),
-          const SizedBox(height: 15),
-          Align(
-            alignment: Alignment.topRight,
-            child: SizedBox(
-              width: 280,
-              height: 40,
-              child: SearchField(
-                textEditingController: searchCont,
-                onSubmmited: (value) {
-                  context.read<SearchMovieBloc>().add(
-                        GetSearchMovie(keyword: value),
-                      );
-                },
-              ),
-            ),
-          ),
-          const SizedBox(height: 15),
-          _result(context),
-          const SizedBox(height: 10),
-          _resultArea(context),
-        ],
+            const SizedBox(height: 15),
+            _result(context),
+            const SizedBox(height: 10),
+            _resultArea(context),
+          ],
+        ),
       ),
     );
   }
@@ -73,14 +76,12 @@ class SearchPage extends StatelessWidget {
           return const SmallText(
             text: 'Total Results : ....',
             fontWeight: FontWeight.bold,
-            color: AppColor.primary,
           );
         } else if (state.runtimeType == SearchMovieSuccesState) {
           state as SearchMovieSuccesState;
           return SmallText(
             text: 'Total Results : ${state.films.totalResults}',
             fontWeight: FontWeight.bold,
-            color: AppColor.primary,
           );
         }
         return const SizedBox();

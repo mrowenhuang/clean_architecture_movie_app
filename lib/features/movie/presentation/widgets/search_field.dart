@@ -2,7 +2,10 @@ import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
 import 'package:flutter/material.dart';
 
 class SearchField extends StatelessWidget {
-  const SearchField({super.key, required this.textEditingController, required this.onSubmmited});
+  const SearchField(
+      {super.key,
+      required this.textEditingController,
+      required this.onSubmmited});
 
   final TextEditingController textEditingController;
   final ValueChanged<String>? onSubmmited;
@@ -18,14 +21,14 @@ class SearchField extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(
             color: AppColor.primary,
-            width: 2,
+            width: 1,
           ),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(
             color: AppColor.primary,
-            width: 2,
+            width: 1,
           ),
         ),
         fillColor: AppColor.def,
@@ -39,7 +42,6 @@ class SearchField extends StatelessWidget {
           Icons.search,
           color: AppColor.primary,
         ),
-        
       ),
       onSubmitted: onSubmmited,
     );

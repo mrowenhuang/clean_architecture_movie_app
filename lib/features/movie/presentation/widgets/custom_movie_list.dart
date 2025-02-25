@@ -51,7 +51,7 @@ class CustomMovieList extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         SizedBox(
-                          width: 300,
+                          width: 220,
                           child: SmallText(
                             text: title,
                             color: AppColor.primary,

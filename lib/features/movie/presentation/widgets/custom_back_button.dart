@@ -24,7 +24,7 @@ class CustomBackButton extends StatelessWidget {
         color: AppColor.primary,
       ),
       style: ElevatedButton.styleFrom(
-        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+        padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
         backgroundColor: AppColor.secondary,
         shape: const StadiumBorder(),
       ),

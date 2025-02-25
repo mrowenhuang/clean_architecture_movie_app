@@ -1,4 +1,3 @@
-import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -12,4 +11,6 @@ class AppTheme {
           // .apply(bodyColor: AppColor.def, displayColor: AppColor.def),
     );
   }
+
+  static EdgeInsets defPadding = const EdgeInsets.only(bottom: 20, left: 20, right: 20, top: 40);
 }
