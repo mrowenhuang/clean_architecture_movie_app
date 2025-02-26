@@ -31,10 +31,7 @@ class MyApp extends StatelessWidget {
           create: (context) => sl<PopularMovieBloc>()..add(GetPopularMovie()),
         ),
         BlocProvider(
-          create: (context) => sl<FilterMovieBloc>()
-            ..add(
-              const GetFilterMovieEvent(language: "id", year: "2025", page: "1"),
-            ),
+          create: (context) => sl<FilterMovieBloc>(),
         )
       ],
       child: MaterialApp(

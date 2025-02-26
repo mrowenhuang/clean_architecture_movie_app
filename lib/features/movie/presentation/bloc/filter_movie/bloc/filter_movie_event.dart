@@ -12,8 +12,11 @@ final class GetFilterMovieEvent extends FilterMovieEvent {
   final String year;
   final String page;
 
-  const GetFilterMovieEvent(
-      {required this.language, required this.year, required this.page});
+  const GetFilterMovieEvent({
+    required this.language,
+    required this.year,
+    required this.page,
+  });
 }
 
 final class GetLanguageMovieEvent extends FilterMovieEvent {

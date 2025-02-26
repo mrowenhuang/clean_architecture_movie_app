@@ -1,6 +1,8 @@
 part of 'filter_movie_bloc.dart';
 
-sealed class FilterMovieState extends Equatable {}
+sealed class FilterMovieState extends Equatable {
+  
+}
 
 final class FilterMovieInitial extends FilterMovieState {
   @override
@@ -16,32 +18,15 @@ final class FilterMovieLoadingState extends FilterMovieState {
 
 final class FilterMovieSuccessState extends FilterMovieState {
   final SearchFilmEnities films;
+  final String? year;
+  final String? language;
 
-  FilterMovieSuccessState({required this.films});
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => [films];
-}
-
-final class FilterMovieLanguageState extends FilterMovieState {
-  final String language;
-
-  FilterMovieLanguageState({required this.language});
+  FilterMovieSuccessState(
+      {required this.year, required this.language, required this.films});
 
   @override
   // TODO: implement props
-  List<Object?> get props => [language];
-}
-
-final class FilterMovieYearState extends FilterMovieState {
-  final String year;
-
-  FilterMovieYearState({required this.year});
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => [year];
+  List<Object?> get props => [films, year, language];
 }
 
 final class FilterMovieErrorState extends FilterMovieState {

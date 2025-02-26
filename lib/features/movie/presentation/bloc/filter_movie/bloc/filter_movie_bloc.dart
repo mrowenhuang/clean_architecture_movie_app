@@ -15,7 +15,7 @@ class FilterMovieBloc extends Bloc<FilterMovieEvent, FilterMovieState> {
 
   FilterMovieBloc(this._getLanguageMovies) : super(FilterMovieInitial()) {
     on<GetFilterMovieEvent>(getFilterMovie);
-    on<GetLanguageMovieEvent>(getLanguageMovieEvent);
+    // on<GetLanguageMovieEvent>(getLanguageMovieEvent);
     on<GetYearMovieEvent>(getYearMovieEvent);
   }
 
@@ -23,27 +23,33 @@ class FilterMovieBloc extends Bloc<FilterMovieEvent, FilterMovieState> {
       GetFilterMovieEvent event, Emitter<FilterMovieState> emit) async {
     emit(FilterMovieLoadingState());
 
-    final response = await _getLanguageMovies.call(event.language, event.year,
-        page: event.page);
+    final response = await _getLanguageMovies.call(
+      event.language,
+      event.year,
+      page: event.page,
+    );
 
     response.fold(
       (failure) {
         emit(FilterMovieErrorState(message: failure.toString()));
       },
       (films) {
-        emit(FilterMovieSuccessState(films: films));
+        emit(FilterMovieSuccessState(
+            films: films, year: event.year, language: event.language));
       },
     );
   }
 
-  FutureOr<void> getLanguageMovieEvent(
-      GetLanguageMovieEvent event, Emitter<FilterMovieState> emit) {
-    language = event.language;
-    emit(FilterMovieLanguageState(language: event.language));
-
-    add(GetFilterMovieEvent(language: event.language, year: year, page: "1"));
+  FutureOr<void> getYearMovieEvent(
+      GetYearMovieEvent event, Emitter<FilterMovieState> emit) async {
+    add(GetFilterMovieEvent(language: language, year: event.year, page: "1"));
   }
 
-  FutureOr<void> getYearMovieEvent(
-      GetYearMovieEvent event, Emitter<FilterMovieState> emit) async {}
+  // FutureOr<void> getLanguageMovieEvent(
+  //     GetLanguageMovieEvent event, Emitter<FilterMovieState> emit) {
+  //   language = event.language;
+  //   emit(FilterMovieLanguageState(language: event.language));
+
+  //   add(GetFilterMovieEvent(language: event.language, year: year, page: "1"));
+  // }
 }
