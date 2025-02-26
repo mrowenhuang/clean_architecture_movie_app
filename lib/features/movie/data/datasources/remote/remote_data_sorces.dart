@@ -10,6 +10,8 @@ abstract class RemoteDataSorces {
   Future<List<FilmModels>> getPopularMovies();
   Future<SearchFilmModels> getSearchMovies(String movieName,
       {String page = "1"});
+  Future<SearchFilmModels> getLanguageMovies(
+      {String language = "id", String year = "2025", String page = "1"});
 }
 
 class RemoteDataSorcesImpl implements RemoteDataSorces {
@@ -51,6 +53,21 @@ class RemoteDataSorcesImpl implements RemoteDataSorces {
       {String page = "1"}) async {
     final response =
         await _dioConn.get(ApiNetwork.searchMovie(movieName, page: page));
+
+    if (response.statusCode == 200) {
+      final SearchFilmModels filmData = SearchFilmModels.fromMap(response.data);
+
+      return filmData;
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<SearchFilmModels> getLanguageMovies(
+      {String language = "id", String year = "2025", String page = "1"}) async {
+    final response = await _dioConn
+        .get(ApiNetwork.searchByLanguage(language, year, page: page));
 
     if (response.statusCode == 200) {
       final SearchFilmModels filmData = SearchFilmModels.fromMap(response.data);

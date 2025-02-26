@@ -1,9 +1,11 @@
 import 'package:clean_architecture_movie_app/features/movie/data/datasources/remote/remote_data_sorces.dart';
 import 'package:clean_architecture_movie_app/features/movie/data/repositories/movie_repository_impl.dart';
 import 'package:clean_architecture_movie_app/features/movie/domain/repositories/movie_repository.dart';
+import 'package:clean_architecture_movie_app/features/movie/domain/usecases/get_language_movies.dart';
 import 'package:clean_architecture_movie_app/features/movie/domain/usecases/get_popular_movies.dart';
 import 'package:clean_architecture_movie_app/features/movie/domain/usecases/get_search_movies.dart';
 import 'package:clean_architecture_movie_app/features/movie/domain/usecases/get_top_rated_movies.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/filter_movie/bloc/filter_movie_bloc.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/page_control/cubit/page_control_cubit.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/popular_movie/popular_movie_bloc.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/search_movie/search_movie_bloc.dart';
@@ -25,6 +27,9 @@ Future<void> initializeDependecies() async {
     () => SearchMovieBloc(sl()),
   );
   sl.registerFactory(
+    () => FilterMovieBloc(sl()),
+  );
+  sl.registerFactory(
     () => PageControlCubit(),
   );
 
@@ -37,6 +42,9 @@ Future<void> initializeDependecies() async {
   );
   sl.registerLazySingleton(
     () => GetSearchMovies(sl()),
+  );
+  sl.registerLazySingleton(
+    () => GetLanguageMovies(sl()),
   );
 
   // TODO : REPOSITORIES

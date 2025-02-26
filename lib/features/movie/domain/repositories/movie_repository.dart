@@ -9,5 +9,6 @@ abstract class MovieRepository {
   Future<Either<ServerFailure, SearchFilmEnities>> getSearchMovies(
       String movieName,
       {String page = "1"});
-  // Future<Either<ServerFailure,List<FilmEntities>>> getTopRatedMovies();
+  Future<Either<ServerFailure, SearchFilmEnities>> getlanguageMovies(
+      String language, String year, {String page = "1"});
 }

@@ -1,7 +1,7 @@
 import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/page_control/cubit/page_control_cubit.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/pages/filter/filter_page.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/pages/home/home_movie_page.dart';
-import 'package:clean_architecture_movie_app/features/movie/presentation/pages/popular/popular_page.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/pages/search/search_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,7 +13,7 @@ class HomePage extends StatelessWidget {
   final List page = [
     const HomeMoviePage(),
     SearchPage(),
-    const PopularPage(),
+    const FilterPage()
   ];
 
   @override

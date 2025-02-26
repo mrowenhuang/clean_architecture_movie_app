@@ -48,4 +48,17 @@ class MovieRepositoryImpl implements MovieRepository {
       return left(ServerFailure());
     }
   }
+
+  @override
+  Future<Either<ServerFailure, SearchFilmEnities>> getlanguageMovies(
+      String language, String year, {String page = "1"}) async {
+    try {
+      final SearchFilmEnities film = await _remoteDataSorces.getLanguageMovies(
+          language: language, year: year, page: page);
+
+      return right(film);
+    } catch (e) {
+      return left(ServerFailure());
+    }
+  }
 }

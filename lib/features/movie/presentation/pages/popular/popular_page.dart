@@ -1,6 +1,8 @@
+import 'package:clean_architecture_movie_app/common/navigator/app_navigator.dart';
 import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
 import 'package:clean_architecture_movie_app/core/configs/app_theme.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/popular_movie/popular_movie_bloc.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/pages/detail/detail_movie.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/custom_back_button.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/custom_movie_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -55,6 +57,9 @@ class PopularPage extends StatelessWidget {
                       itemBuilder: (context, index) {
                         var data = state.films[index];
                         return CustomMovieList(
+                          ontap: () {
+                            AppNavigator.push(context, DetailMovie(film: data));
+                          },
                           title: data.title.toString(),
                           overview: data.overview.toString(),
                           date: data.releaseDate.toString(),

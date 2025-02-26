@@ -9,9 +9,10 @@ import 'package:clean_architecture_movie_app/features/movie/presentation/widgets
 import 'package:flutter/material.dart';
 
 class DetailMovie extends StatelessWidget {
-  const DetailMovie({super.key, required this.film});
+  DetailMovie({super.key, required this.film});
 
   final FilmEntities film;
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -64,8 +65,8 @@ class DetailMovie extends StatelessWidget {
                           sigmaY: 5,
                         ),
                         child: Container(
+                          height: MediaQuery.of(context).size.height * .4,
                           padding: const EdgeInsets.all(15),
-                          height: MediaQuery.of(context).size.height * .5,
                           decoration: BoxDecoration(
                             color: AppColor.secondary.withOpacity(.6),
                             borderRadius: BorderRadius.circular(15),
@@ -75,35 +76,58 @@ class DetailMovie extends StatelessWidget {
                             children: [
                               SmallText(
                                 text: film.title.toString(),
-                                fontsize: 14,
+                                fontsize: 16,
+                                fontWeight: FontWeight.bold,
                                 color: AppColor.primary,
                               ),
                               const SizedBox(height: 5),
-                              SmallText(
+                              const SmallText(
                                 text: "Genre",
-                                fontsize: 14,
                                 color: AppColor.primary,
                               ),
-                              SizedBox(height: 10),
+                              const SizedBox(height: 10),
                               SmallText(
                                 text: film.releaseDate.toString(),
-                                fontsize: 14,
                                 color: AppColor.primary,
                               ),
-                              SizedBox(height: 15),
-                              Text(
-                                film.overview.toString(),
-                                maxLines: 7,
-                                textAlign: TextAlign.justify,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 11,
+                              const SizedBox(height: 10),
+                              Expanded(
+                                child: Scrollbar(
+                                  scrollbarOrientation:
+                                      ScrollbarOrientation.left,
+                                  controller: _scrollController,
+                                  thumbVisibility: true,
+                                  child: ListView(
+                                    controller: _scrollController,
+                                    physics: const BouncingScrollPhysics(),
+                                    children: [
+                                      Text(
+                                        film.overview.toString(),
+                                        textAlign: TextAlign.justify,
+                                        style: const TextStyle(
+                                          fontSize: 11,
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
-                              const Spacer(),
+                              const SizedBox(height: 20),
                               ElevatedButton.icon(
-                                  onPressed: () {},
-                                  label: Text("Add Watch List"))
+                                onPressed: () {},
+                                label: const Text("Add To Watch List"),
+                                icon: const Icon(Icons.bookmark_add_outlined),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColor.primary,
+                                  fixedSize: Size(
+                                    MediaQuery.of(context).size.width,
+                                    40,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                  ),
+                                ),
+                              )
                             ],
                           ),
                         ),

@@ -256,37 +256,45 @@ class HomeMoviePage extends StatelessWidget {
                 var data = state.films[index];
                 return Padding(
                   padding: const EdgeInsets.only(right: 10),
-                  child: Column(
-                    children: [
-                      Material(
-                        elevation: 8,
-                        borderRadius: BorderRadius.circular(8),
-                        child: ClipRRect(
+                  child: GestureDetector(
+                    onTap: () {
+                      AppNavigator.push(
+                        context,
+                        DetailMovie(film: data),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Material(
+                          elevation: 8,
                           borderRadius: BorderRadius.circular(8),
-                          child: CachedNetworkImage(
-                            imageUrl:
-                                "https://image.tmdb.org/t/p/w780${data.posterPath}",
-                            placeholder: (context, url) {
-                              return const Center(
-                                child: CupertinoActivityIndicator(
-                                  color: AppColor.primary,
-                                ),
-                              );
-                            },
-                            fit: BoxFit.fill,
-                            height: 130,
-                            width: 100,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: CachedNetworkImage(
+                              imageUrl:
+                                  "https://image.tmdb.org/t/p/w780${data.posterPath}",
+                              placeholder: (context, url) {
+                                return const Center(
+                                  child: CupertinoActivityIndicator(
+                                    color: AppColor.primary,
+                                  ),
+                                );
+                              },
+                              fit: BoxFit.fill,
+                              height: 130,
+                              width: 100,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 5),
-                      SizedBox(
-                        width: 100,
-                        child: SmallText(
-                          text: data.title.toString(),
+                        const SizedBox(height: 5),
+                        SizedBox(
+                          width: 100,
+                          child: SmallText(
+                            text: data.title.toString(),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 );
               },
