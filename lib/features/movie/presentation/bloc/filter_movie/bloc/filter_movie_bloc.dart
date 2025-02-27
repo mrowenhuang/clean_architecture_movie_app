@@ -10,12 +10,12 @@ part 'filter_movie_state.dart';
 
 class FilterMovieBloc extends Bloc<FilterMovieEvent, FilterMovieState> {
   final GetLanguageMovies _getLanguageMovies;
-  String year = "2025";
+  String year = DateTime.now().year.toString();
   String language = "id";
 
   FilterMovieBloc(this._getLanguageMovies) : super(FilterMovieInitial()) {
     on<GetFilterMovieEvent>(getFilterMovie);
-    // on<GetLanguageMovieEvent>(getLanguageMovieEvent);
+    on<GetLanguageMovieEvent>(getLanguageMovieEvent);
     on<GetYearMovieEvent>(getYearMovieEvent);
   }
 
@@ -41,15 +41,14 @@ class FilterMovieBloc extends Bloc<FilterMovieEvent, FilterMovieState> {
   }
 
   FutureOr<void> getYearMovieEvent(
-      GetYearMovieEvent event, Emitter<FilterMovieState> emit) async {
+      GetYearMovieEvent event, Emitter<FilterMovieState> emit) {
+    year = event.year;
     add(GetFilterMovieEvent(language: language, year: event.year, page: "1"));
   }
 
-  // FutureOr<void> getLanguageMovieEvent(
-  //     GetLanguageMovieEvent event, Emitter<FilterMovieState> emit) {
-  //   language = event.language;
-  //   emit(FilterMovieLanguageState(language: event.language));
-
-  //   add(GetFilterMovieEvent(language: event.language, year: year, page: "1"));
-  // }
+  FutureOr<void> getLanguageMovieEvent(
+      GetLanguageMovieEvent event, Emitter<FilterMovieState> emit) {
+    language = event.language;
+    add(GetFilterMovieEvent(language: event.language, year: year, page: "1"));
+  }
 }

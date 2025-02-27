@@ -28,7 +28,7 @@ class MyApp extends StatelessWidget {
           create: (context) => sl<TopRatedMovieBloc>()..add(GetTopRatedMovie()),
         ),
         BlocProvider(
-          create: (context) => sl<PopularMovieBloc>()..add(GetPopularMovie()),
+        create: (context) => sl<PopularMovieBloc>()..add(GetPopularMovie()),
         ),
         BlocProvider(
           create: (context) => sl<FilterMovieBloc>(),

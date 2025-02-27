@@ -59,20 +59,11 @@ class FilterPage extends StatelessWidget {
                           ),
                           content:
                               BlocBuilder<FilterMovieBloc, FilterMovieState>(
-                            bloc: context.read<FilterMovieBloc>(),
+                            buildWhen: (previous, current) {
+                              return current is FilterMovieSuccessState;
+                            },
                             builder: (context, state) {
                               if (state.runtimeType ==
-                                  FilterMovieLoadingState) {
-                                return const SizedBox(
-                                  width: 200,
-                                  height: 200,
-                                  child: Center(
-                                    child: CupertinoActivityIndicator(
-                                      color: AppColor.primary,
-                                    ),
-                                  ),
-                                );
-                              } else if (state.runtimeType ==
                                   FilterMovieSuccessState) {
                                 state as FilterMovieSuccessState;
                                 return SizedBox(
@@ -82,15 +73,20 @@ class FilterPage extends StatelessWidget {
                                     firstDate: DateTime(2000),
                                     lastDate: DateTime.now(),
                                     selectedDate: DateTime(
-                                        int.parse(state.year.toString())),
+                                      int.parse(
+                                          context.read<FilterMovieBloc>().year),
+                                    ),
                                     currentDate: DateTime(
-                                        int.parse(state.year.toString())),
+                                      int.parse(
+                                          context.read<FilterMovieBloc>().year),
+                                    ),
                                     onChanged: (value) {
                                       context.read<FilterMovieBloc>().add(
                                             GetYearMovieEvent(
                                               year: value.year.toString(),
                                             ),
                                           );
+                                      Navigator.pop(context);
                                     },
                                   ),
                                 );
@@ -114,22 +110,11 @@ class FilterPage extends StatelessWidget {
                     backgroundColor: AppColor.secondary,
                   ),
                   label: BlocBuilder<FilterMovieBloc, FilterMovieState>(
-                    bloc: context.read<FilterMovieBloc>(),
                     builder: (context, state) {
-                      if (state.runtimeType == FilterMovieLoadingState) {
-                        return const SmallText(
-                          text: ".....",
-                          color: AppColor.primary,
-                        );
-                      } else if (state.runtimeType == FilterMovieSuccessState) {
-                        state as FilterMovieSuccessState;
-                        return SmallText(
-                          text: state.year.toString(),
-                          color: AppColor.primary,
-                          fontsize: 14,
-                        );
-                      }
-                      return const SizedBox();
+                      return SmallText(
+                        text: context.read<FilterMovieBloc>().year,
+                        color: AppColor.primary,
+                      );
                     },
                   ),
                   icon: Icon(
@@ -137,34 +122,53 @@ class FilterPage extends StatelessWidget {
                     color: AppColor.primary,
                   ),
                 ),
-                DropdownMenu(
-                  hintText: "Language",
-                  inputDecorationTheme: InputDecorationTheme(
-                    hintStyle: TextStyle(
-                      color: AppColor.primary,
-                      fontSize: 14,
-                    ),
-                    filled: true,
-                    fillColor: AppColor.secondary,
-                    suffixIconColor: AppColor.primary,
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: AppColor.primary, width: 1),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10),
-                      borderSide: BorderSide(color: AppColor.primary, width: 1),
-                    ),
-                  ),
-                  textStyle: TextStyle(color: AppColor.primary),
-                  dropdownMenuEntries: [
-                    DropdownMenuEntry(value: "zh", label: "China"),
-                    DropdownMenuEntry(value: "id", label: "Indonesia"),
-                    DropdownMenuEntry(value: "en", label: "English"),
-                    DropdownMenuEntry(value: "th", label: "Thailand"),
-                    DropdownMenuEntry(value: "ja", label: "Japanese"),
-                  ],
-                  onSelected: (value) {},
+                BlocBuilder<FilterMovieBloc, FilterMovieState>(
+                  builder: (context, state) {
+                    return DropdownMenu(
+                      hintText: "Language",
+                      inputDecorationTheme: InputDecorationTheme(
+                        hintStyle: TextStyle(
+                          color: AppColor.primary,
+                          fontSize: 14,
+                        ),
+                        filled: true,
+                        fillColor: AppColor.secondary,
+                        suffixIconColor: AppColor.primary,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              BorderSide(color: AppColor.primary, width: 1),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide:
+                              BorderSide(color: AppColor.primary, width: 1),
+                        ),
+                      ),
+                      textStyle: const TextStyle(color: AppColor.primary),
+                      menuStyle: const MenuStyle(
+                        backgroundColor: WidgetStatePropertyAll(
+                          AppColor.secondary,
+                        ),
+                      ),
+                      dropdownMenuEntries: const [
+                        DropdownMenuEntry(value: "zh", label: "China"),
+                        DropdownMenuEntry(value: "id", label: "Indonesia"),
+                        DropdownMenuEntry(value: "en", label: "English"),
+                        DropdownMenuEntry(value: "th", label: "Thailand"),
+                        DropdownMenuEntry(value: "ja", label: "Japanese"),
+                      ],
+                      initialSelection:
+                          context.read<FilterMovieBloc>().language,
+                      onSelected: (value) {
+                        context.read<FilterMovieBloc>().add(
+                              GetLanguageMovieEvent(
+                                language: value.toString(),
+                              ),
+                            );
+                      },
+                    );
+                  },
                 ),
               ],
             ),
@@ -172,11 +176,16 @@ class FilterPage extends StatelessWidget {
             Expanded(
               child: BlocBuilder<FilterMovieBloc, FilterMovieState>(
                 bloc: context.read<FilterMovieBloc>()
-                  ..add(const GetFilterMovieEvent(
-                      language: "id", year: "2025", page: "1")),
+                  ..add(
+                    GetFilterMovieEvent(
+                      language: context.read<FilterMovieBloc>().language,
+                      year: context.read<FilterMovieBloc>().year,
+                      page: "1",
+                    ),
+                  ),
                 builder: (context, state) {
                   if (state.runtimeType == FilterMovieLoadingState) {
-                    return Center(
+                    return const Center(
                       child: CupertinoActivityIndicator(
                         color: AppColor.primary,
                       ),
