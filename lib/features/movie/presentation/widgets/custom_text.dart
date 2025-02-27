@@ -1,8 +1,8 @@
 import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
 import 'package:flutter/material.dart';
 
-class SmallText extends StatelessWidget {
-  const SmallText({
+class CustomText extends StatelessWidget {
+  const CustomText({
     super.key,
     this.color = AppColor.secondary,
     required this.text,

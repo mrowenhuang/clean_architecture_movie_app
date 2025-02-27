@@ -5,10 +5,10 @@ import 'package:clean_architecture_movie_app/core/configs/app_theme.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/page_control/cubit/page_control_cubit.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/popular_movie/popular_movie_bloc.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/top_rated_movie/top_rated_movie_bloc.dart';
-import 'package:clean_architecture_movie_app/features/movie/presentation/pages/detail/detail_movie.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/pages/detail/detail_page.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/pages/popular/popular_page.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/pages/top_rated/top_rated_page.dart';
-import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/small_text.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/custom_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -69,7 +69,7 @@ class HomeMoviePage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const SmallText(
+                      const CustomText(
                         text: "Top Rated",
                         fontsize: 16,
                       ),
@@ -94,7 +94,7 @@ class HomeMoviePage extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const SmallText(
+                      const CustomText(
                         text: "Popular",
                         fontsize: 16,
                       ),
@@ -223,7 +223,7 @@ class HomeMoviePage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                const SmallText(text: "Movie Name"),
+                const CustomText(text: "Movie Name"),
               ],
             ),
           );
@@ -260,7 +260,7 @@ class HomeMoviePage extends StatelessWidget {
                     onTap: () {
                       AppNavigator.push(
                         context,
-                        DetailMovie(film: data),
+                        DetailPage(film: data),
                       );
                     },
                     child: Column(
@@ -289,7 +289,7 @@ class HomeMoviePage extends StatelessWidget {
                         const SizedBox(height: 5),
                         SizedBox(
                           width: 100,
-                          child: SmallText(
+                          child: CustomText(
                             text: data.title.toString(),
                           ),
                         ),
@@ -387,7 +387,7 @@ class HomeMoviePage extends StatelessWidget {
                                   children: [
                                     SizedBox(
                                       width: 150,
-                                      child: SmallText(
+                                      child: CustomText(
                                         text: data.title.toString(),
                                         fontsize: 14,
                                         color: AppColor.primary,
@@ -398,7 +398,7 @@ class HomeMoviePage extends StatelessWidget {
                                       onTap: () {
                                         AppNavigator.push(
                                           context,
-                                          DetailMovie(
+                                          DetailPage(
                                             film: data,
                                           ),
                                         );
@@ -422,7 +422,7 @@ class HomeMoviePage extends StatelessWidget {
                                   ],
                                 ),
                                 const SizedBox(height: 5),
-                                const SmallText(
+                                const CustomText(
                                   text: "Genre",
                                   color: AppColor.primary,
                                   fontsize: 11,

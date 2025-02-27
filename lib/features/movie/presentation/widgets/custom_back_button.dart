@@ -1,5 +1,5 @@
 import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
-import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/small_text.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 
 class CustomBackButton extends StatelessWidget {
@@ -14,7 +14,7 @@ class CustomBackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       onPressed: ontap,
-      label: const SmallText(
+      label: const CustomText(
         text: "Back",
         color: AppColor.primary,
       ),

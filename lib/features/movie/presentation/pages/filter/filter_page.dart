@@ -1,8 +1,11 @@
+import 'package:clean_architecture_movie_app/common/navigator/app_navigator.dart';
 import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
 import 'package:clean_architecture_movie_app/core/configs/app_theme.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/filter_movie/bloc/filter_movie_bloc.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/pages/detail/detail_page.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/custom_back_button.dart';
-import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/small_text.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/custom_movie_list.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/custom_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,17 +27,24 @@ class FilterPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                CustomBackButton(
-                  ontap: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                const Text(
-                  'Filter Movie',
-                  style: TextStyle(
-                    color: AppColor.primary,
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 8),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(15),
+                    color: AppColor.secondary,
+                    border: Border.all(
+                      width: 1,
+                      color: AppColor.primary,
+                    ),
+                  ),
+                  child: const Text(
+                    "Filter Movie",
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: AppColor.primary,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],
@@ -52,7 +62,7 @@ class FilterPage extends StatelessWidget {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
-                          title: const SmallText(
+                          title: const CustomText(
                             text: "Choose Date",
                             color: AppColor.primary,
                             fontWeight: FontWeight.bold,
@@ -99,8 +109,7 @@ class FilterPage extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 40, vertical: 15),
+                    fixedSize: Size(120, 50),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(
                         10,
@@ -111,7 +120,7 @@ class FilterPage extends StatelessWidget {
                   ),
                   label: BlocBuilder<FilterMovieBloc, FilterMovieState>(
                     builder: (context, state) {
-                      return SmallText(
+                      return CustomText(
                         text: context.read<FilterMovieBloc>().year,
                         color: AppColor.primary,
                       );
@@ -125,8 +134,12 @@ class FilterPage extends StatelessWidget {
                 BlocBuilder<FilterMovieBloc, FilterMovieState>(
                   builder: (context, state) {
                     return DropdownMenu(
+                      leadingIcon: const Icon(Icons.translate_rounded),
                       hintText: "Language",
                       inputDecorationTheme: InputDecorationTheme(
+                        prefixIconColor: AppColor.primary,
+                        constraints:
+                            const BoxConstraints(maxHeight: 50, maxWidth: 200),
                         hintStyle: TextStyle(
                           color: AppColor.primary,
                           fontSize: 14,
@@ -194,24 +207,37 @@ class FilterPage extends StatelessWidget {
                     state as FilterMovieSuccessState;
                     return Column(
                       children: [
-                        SmallText(
-                          text: "Results : ${state.films.totalResults}",
-                          color: AppColor.primary,
-                          fontsize: 14,
+                        Align(
+                          alignment: Alignment.topLeft,
+                          child: CustomText(
+                            text: 'Total Results : ${state.films.totalResults}',
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                         Expanded(
                           child: ListView.builder(
+                            physics: const BouncingScrollPhysics(),
                             itemCount: state.films.results!.length,
                             itemBuilder: (context, index) {
-                              return Text(
-                                  state.films.results![index].title.toString());
+                              final data = state.films.results![index];
+                              return CustomMovieList(
+                                title: data.title.toString(),
+                                overview: data.overview.toString(),
+                                date: data.releaseDate.toString(),
+                                poster: data.posterPath.toString(),
+                                language: data.originalLanguage.toString(),
+                                ontap: () {
+                                  AppNavigator.push(
+                                    context,
+                                    DetailPage(film: data),
+                                  );
+                                },
+                              );
                             },
                           ),
                         )
                       ],
                     );
-                  } else if (state.runtimeType == FilterMovieErrorState) {
-                    print("error");
                   }
                   return SizedBox();
                 },

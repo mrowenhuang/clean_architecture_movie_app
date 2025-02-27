@@ -2,7 +2,7 @@ import 'package:clean_architecture_movie_app/common/navigator/app_navigator.dart
 import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
 import 'package:clean_architecture_movie_app/core/configs/app_theme.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/top_rated_movie/top_rated_movie_bloc.dart';
-import 'package:clean_architecture_movie_app/features/movie/presentation/pages/detail/detail_movie.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/pages/detail/detail_page.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/custom_back_button.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/custom_movie_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -60,7 +60,7 @@ class TopRatedPage extends StatelessWidget {
                           ontap: () {
                             AppNavigator.push(
                               context,
-                              DetailMovie(film: data),
+                              DetailPage(film: data),
                             );
                           },
                           title: data.title.toString(),

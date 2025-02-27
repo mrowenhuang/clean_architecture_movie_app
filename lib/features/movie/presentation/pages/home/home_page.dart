@@ -1,5 +1,6 @@
 import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/page_control/cubit/page_control_cubit.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/pages/bookmark/bookmark_page.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/pages/filter/filter_page.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/pages/home/home_movie_page.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/pages/search/search_page.dart';
@@ -13,7 +14,8 @@ class HomePage extends StatelessWidget {
   final List page = [
     const HomeMoviePage(),
     SearchPage(),
-    FilterPage()
+    const FilterPage(),
+    const BookmarkPage()
   ];
 
   @override
@@ -57,7 +59,7 @@ class HomePage extends StatelessWidget {
                 margin: EdgeInsets.symmetric(horizontal: 5, vertical: 15),
               ),
               GButton(
-                icon: Icons.bookmark_rounded,
+                icon: Icons.bookmark_border_rounded,
                 backgroundColor: AppColor.primary,
                 padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                 borderRadius: BorderRadius.circular(10),

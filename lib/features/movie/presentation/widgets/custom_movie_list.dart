@@ -1,6 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
-import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/small_text.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/custom_text.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -11,7 +11,8 @@ class CustomMovieList extends StatelessWidget {
     required this.overview,
     required this.date,
     required this.poster,
-    required this.language, required this.ontap,
+    required this.language,
+    required this.ontap,
   });
 
   final String title;
@@ -55,14 +56,14 @@ class CustomMovieList extends StatelessWidget {
                         children: [
                           SizedBox(
                             width: 220,
-                            child: SmallText(
+                            child: CustomText(
                               text: title,
                               color: AppColor.primary,
                               fontsize: 14,
                               align: TextAlign.left,
                             ),
                           ),
-                          SmallText(
+                          CustomText(
                             text: language,
                             color: AppColor.primary,
                           ),
@@ -79,7 +80,7 @@ class CustomMovieList extends StatelessWidget {
                         ),
                       ),
                       const Spacer(),
-                      SmallText(
+                      CustomText(
                         text: date,
                         fontsize: 11,
                         color: AppColor.primary,

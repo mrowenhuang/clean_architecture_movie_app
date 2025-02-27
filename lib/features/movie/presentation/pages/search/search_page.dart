@@ -2,10 +2,10 @@ import 'package:clean_architecture_movie_app/common/navigator/app_navigator.dart
 import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
 import 'package:clean_architecture_movie_app/core/configs/app_theme.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/search_movie/search_movie_bloc.dart';
-import 'package:clean_architecture_movie_app/features/movie/presentation/pages/detail/detail_movie.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/pages/detail/detail_page.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/custom_movie_list.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/search_field.dart';
-import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/small_text.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/custom_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -75,13 +75,13 @@ class SearchPage extends StatelessWidget {
         if (state.runtimeType == SearchMovieInitial) {
           return const SizedBox();
         } else if (state.runtimeType == SearchMovieLoadingState) {
-          return const SmallText(
+          return const CustomText(
             text: 'Total Results : ....',
             fontWeight: FontWeight.bold,
           );
         } else if (state.runtimeType == SearchMovieSuccesState) {
           state as SearchMovieSuccesState;
-          return SmallText(
+          return CustomText(
             text: 'Total Results : ${state.films.totalResults}',
             fontWeight: FontWeight.bold,
           );
@@ -98,7 +98,7 @@ class SearchPage extends StatelessWidget {
         builder: (context, state) {
           if (state.runtimeType == SearchMovieInitial) {
             return const Center(
-              child: SmallText(
+              child: CustomText(
                 text: "Try Searching",
                 color: AppColor.secondary,
                 fontWeight: FontWeight.bold,
@@ -123,7 +123,7 @@ class SearchPage extends StatelessWidget {
                   ontap: () {
                     AppNavigator.push(
                       context,
-                      DetailMovie(film: data),
+                      DetailPage(film: data),
                     );
                   },
                   title: data.title.toString(),
