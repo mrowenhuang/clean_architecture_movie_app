@@ -10,5 +10,8 @@ abstract class MovieRepository {
       String movieName,
       {String page = "1"});
   Future<Either<ServerFailure, SearchFilmEnities>> getlanguageMovies(
-      String language, String year, {String page = "1"});
+      String language, String year,
+      {String page = "1"});
+  Future<Either<ServerFailure, List<FilmEntities>>> addToWatchList(
+      FilmEntities film);
 }

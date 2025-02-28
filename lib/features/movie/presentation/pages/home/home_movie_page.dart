@@ -5,6 +5,7 @@ import 'package:clean_architecture_movie_app/core/configs/app_theme.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/page_control/cubit/page_control_cubit.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/popular_movie/popular_movie_bloc.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/top_rated_movie/top_rated_movie_bloc.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/watchlist/bloc/watchlist_movie_bloc.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/pages/detail/detail_page.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/pages/popular/popular_page.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/pages/top_rated/top_rated_page.dart';
@@ -19,108 +20,107 @@ class HomeMoviePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Container(
-          padding: AppTheme.defPadding,
-          decoration: const BoxDecoration(
-            gradient: AppColor.bgColor,
-          ),
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Welcome\n19-03-2025',
+      body: LayoutBuilder(
+          builder: (BuildContext context, BoxConstraints constraints) {
+        return SingleChildScrollView(
+          child: Container(
+            padding: AppTheme.defPadding,
+            decoration: const BoxDecoration(
+              gradient: AppColor.bgColor,
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Welcome\n19-03-2025',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: AppColor.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                _search(
+                  context,
+                  () {
+                    context.read<PageControlCubit>().numberOfPage(1);
+                  },
+                ),
+                const SizedBox(height: 15),
+                const Text.rich(
+                  TextSpan(
+                    text: "Watch List ",
                     style: TextStyle(
-                      fontSize: 20,
-                      color: AppColor.primary,
-                      fontWeight: FontWeight.bold,
+                      color: AppColor.secondary,
+                      fontSize: 16,
                     ),
-                  ),
-                  _search(
-                    context,
-                    () {
-                      context.read<PageControlCubit>().numberOfPage(1);
-                    },
-                  ),
-                  const SizedBox(height: 15),
-                  const Text.rich(
-                    TextSpan(
-                      text: "Watch List ",
-                      style: TextStyle(
-                        color: AppColor.secondary,
-                        fontSize: 16,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: "- 19-03-2025",
-                          style: TextStyle(
-                            color: AppColor.primary,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 10),
-                  _watchList(context, constraints),
-                  const SizedBox(height: 20),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const CustomText(
-                        text: "Top Rated",
-                        fontsize: 16,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          AppNavigator.push(context, const TopRatedPage());
-                        },
-                        child: const Text(
-                          "See More",
-                          style: TextStyle(
-                            color: AppColor.secondary,
-                            fontSize: 14,
-                            decoration: TextDecoration.underline,
-                          ),
+                      TextSpan(
+                        text: "- 19-03-2025",
+                        style: TextStyle(
+                          color: AppColor.primary,
+                          fontWeight: FontWeight.bold,
                         ),
                       )
                     ],
                   ),
-                  const SizedBox(height: 10),
-                  _topRated(context, constraints),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const CustomText(
-                        text: "Popular",
-                        fontsize: 16,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          AppNavigator.push(context, const PopularPage());
-                        },
-                        child: const Text(
-                          "See More",
-                          style: TextStyle(
-                            color: AppColor.secondary,
-                            fontSize: 14,
-                            decoration: TextDecoration.underline,
-                          ),
+                ),
+                const SizedBox(height: 10),
+                _watchList(context, constraints),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const CustomText(
+                      text: "Top Rated",
+                      fontsize: 16,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        AppNavigator.push(context, const TopRatedPage());
+                      },
+                      child: const Text(
+                        "See More",
+                        style: TextStyle(
+                          color: AppColor.secondary,
+                          fontSize: 14,
+                          decoration: TextDecoration.underline,
                         ),
                       ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  _popular(context, constraints),
-                ],
-              );
-            },
+                    )
+                  ],
+                ),
+                const SizedBox(height: 10),
+                _topRated(context, constraints),
+                const SizedBox(height: 10),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const CustomText(
+                      text: "Popular",
+                      fontsize: 16,
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        AppNavigator.push(context, const PopularPage());
+                      },
+                      child: const Text(
+                        "See More",
+                        style: TextStyle(
+                          color: AppColor.secondary,
+                          fontSize: 14,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                _popular(context, constraints),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 
@@ -308,7 +308,7 @@ class HomeMoviePage extends StatelessWidget {
 
   Widget _popular(BuildContext context, BoxConstraints constraints) {
     return SizedBox(
-      height: 280,
+      height: constraints.maxHeight,
       child: BlocBuilder<PopularMovieBloc, PopularMovieState>(
         bloc: context.read<PopularMovieBloc>(),
         builder: (context, state) {
@@ -327,122 +327,157 @@ class HomeMoviePage extends StatelessWidget {
                 var data = state.films[index];
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 10),
-                  child: Container(
-                    padding: const EdgeInsets.all(5),
-                    width: constraints.maxWidth,
-                    height: 200,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(15),
-                      color: AppColor.secondary,
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20),
-                          child: DecoratedBox(
+                  child: Stack(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(5),
+                        width: constraints.maxWidth,
+                        height: 200,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15),
+                          color: AppColor.secondary,
+                        ),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 20),
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      color: AppColor.shadow,
+                                      blurRadius: 10,
+                                      offset: Offset(-10, 10),
+                                    )
+                                  ],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: CachedNetworkImage(
+                                    imageUrl:
+                                        "https://image.tmdb.org/t/p/w780${data.posterPath}",
+                                    placeholder: (context, url) {
+                                      return const Center(
+                                        child: CupertinoActivityIndicator(
+                                          color: AppColor.primary,
+                                        ),
+                                      );
+                                    },
+                                    fit: BoxFit.fill,
+                                    width: 100,
+                                    height: 160,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                  right: 15,
+                                  top: 20,
+                                  left: 20,
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        SizedBox(
+                                          width: 150,
+                                          child: CustomText(
+                                            text: data.title.toString(),
+                                            fontsize: 14,
+                                            color: AppColor.primary,
+                                            align: TextAlign.left,
+                                          ),
+                                        ),
+                                        GestureDetector(
+                                          onTap: () {
+                                            AppNavigator.push(
+                                              context,
+                                              DetailPage(
+                                                film: data,
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            width: 40,
+                                            height: 20,
+                                            decoration: BoxDecoration(
+                                              color: AppColor.primary,
+                                              borderRadius:
+                                                  BorderRadius.circular(
+                                                5,
+                                              ),
+                                            ),
+                                            alignment: Alignment.center,
+                                            child: const Icon(
+                                              Icons.more_horiz_outlined,
+                                              color: AppColor.secondary,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 5),
+                                    const CustomText(
+                                      text: "Genre",
+                                      color: AppColor.primary,
+                                      fontsize: 11,
+                                    ),
+                                    const SizedBox(height: 15),
+                                    Text(
+                                      data.overview.toString(),
+                                      maxLines: 7,
+                                      textAlign: TextAlign.justify,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(
+                                        fontSize: 11,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                      Positioned(
+                        bottom: 5,
+                        right: 5,
+                        child: GestureDetector(
+                          onTap: () {
+                            context
+                                .read<WatchlistMovieBloc>()
+                                .add(AddFilmToWatchlist(film: data));
+                            print("tapped");
+                          },
+                          child: Container(
+                            width: 40,
+                            height: 40,
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: AppColor.primary,
+                              borderRadius: BorderRadius.circular(100),
                               boxShadow: const [
                                 BoxShadow(
-                                  color: AppColor.shadow,
-                                  blurRadius: 10,
-                                  offset: Offset(-10, 10),
-                                )
+                                    blurRadius: 10,
+                                    offset: Offset(-1, 5),
+                                    color: AppColor.shadow)
                               ],
-                              borderRadius: BorderRadius.circular(10),
                             ),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(10),
-                              child: CachedNetworkImage(
-                                imageUrl:
-                                    "https://image.tmdb.org/t/p/w780${data.posterPath}",
-                                placeholder: (context, url) {
-                                  return const Center(
-                                    child: CupertinoActivityIndicator(
-                                      color: AppColor.primary,
-                                    ),
-                                  );
-                                },
-                                fit: BoxFit.fill,
-                                width: 100,
-                                height: 160,
-                              ),
+                            child: const Icon(
+                              Icons.bookmark_add_outlined,
+                              color: AppColor.secondary,
                             ),
                           ),
                         ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              right: 15,
-                              top: 20,
-                              left: 20,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    SizedBox(
-                                      width: 150,
-                                      child: CustomText(
-                                        text: data.title.toString(),
-                                        fontsize: 14,
-                                        color: AppColor.primary,
-                                        align: TextAlign.left,
-                                      ),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        AppNavigator.push(
-                                          context,
-                                          DetailPage(
-                                            film: data,
-                                          ),
-                                        );
-                                      },
-                                      child: Container(
-                                        width: 40,
-                                        height: 20,
-                                        decoration: BoxDecoration(
-                                          color: AppColor.primary,
-                                          borderRadius: BorderRadius.circular(
-                                            5,
-                                          ),
-                                        ),
-                                        alignment: Alignment.center,
-                                        child: const Icon(
-                                          Icons.more_horiz_outlined,
-                                          color: AppColor.secondary,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 5),
-                                const CustomText(
-                                  text: "Genre",
-                                  color: AppColor.primary,
-                                  fontsize: 11,
-                                ),
-                                const SizedBox(height: 15),
-                                Text(
-                                  data.overview.toString(),
-                                  maxLines: 7,
-                                  textAlign: TextAlign.justify,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 11,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 );
               },

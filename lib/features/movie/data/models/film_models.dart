@@ -2,25 +2,90 @@
 import 'dart:convert';
 
 import 'package:clean_architecture_movie_app/features/movie/domain/entities/film_entities.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
+part 'film_models.g.dart';
+
+@HiveType(typeId: 1)
 class FilmModels extends FilmEntities {
+  @HiveField(0)
+  final String? backdropPath;
+
+  @HiveField(1)
+  final List<int>? genreIds;
+
+  @HiveField(2)
+  final int? id;
+
+  @HiveField(3)
+  final String? originalLanguage;
+
+  @HiveField(4)
+  final String? originalTitle;
+
+  @HiveField(5)
+  final String? overview;
+
+  @HiveField(6)
+  final double? popularity;
+
+  @HiveField(7)
+  final String? posterPath;
+
+  @HiveField(8)
+  final String? releaseDate;
+
+  @HiveField(9)
+  final String? title;
+
+  @HiveField(10)
+  final String? description;
+
+  @HiveField(11)
+  final bool? video;
+
+  @HiveField(12)
+  final bool? fav;
+
+  @HiveField(13)
+  final double? voteAverage;
+
+  @HiveField(14)
+  final int? voteCount;
+
   FilmModels({
-    super.backdropPath,
-    super.genreIds,
-    super.id,
-    super.originalLanguage,
-    super.originalTitle,
-    super.overview,
-    super.popularity,
-    super.posterPath,
-    super.releaseDate,
-    super.title,
-    super.description,
-    super.video,
-    super.fav,
-    super.voteAverage,
-    super.voteCount,
-  });
+    this.backdropPath,
+    this.genreIds,
+    this.id,
+    this.originalLanguage,
+    this.originalTitle,
+    this.overview,
+    this.popularity,
+    this.posterPath,
+    this.releaseDate,
+    this.title,
+    this.description,
+    this.video,
+    this.fav,
+    this.voteAverage,
+    this.voteCount,
+  }) : super(
+          backdropPath: backdropPath,
+          genreIds: genreIds,
+          id: id,
+          originalLanguage: originalLanguage,
+          originalTitle: originalTitle,
+          overview: overview,
+          popularity: popularity,
+          posterPath: posterPath,
+          releaseDate: releaseDate,
+          title: title,
+          description: description,
+          video: video,
+          fav: fav,
+          voteAverage: voteAverage,
+          voteCount: voteCount,
+        );
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -53,10 +118,12 @@ class FilmModels extends FilmEntities {
       originalLanguage: map['original_language'] != null
           ? map['original_language'] as String
           : null,
-      originalTitle:
-          map['original_title'] != null ? map['original_title'] as String : null,
+      originalTitle: map['original_title'] != null
+          ? map['original_title'] as String
+          : null,
       overview: map['overview'] != null ? map['overview'] as String : null,
-      popularity: map['popularity'] != null ? map['popularity'] as double : null,
+      popularity:
+          map['popularity'] != null ? map['popularity'] as double : null,
       posterPath:
           map['poster_path'] != null ? map['poster_path'] as String : null,
       releaseDate:
