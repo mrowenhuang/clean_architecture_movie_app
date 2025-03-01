@@ -112,7 +112,7 @@ class FilmModels extends FilmEntities {
       backdropPath:
           map['backdrop_path'] != null ? map['backdrop_path'] as String : null,
       genreIds: map['genre_ids'] != null
-          ? List<int>.from(map['genre_ids'] as List<dynamic>)
+          ? List<int>.from(map['genre_ids'] as List<int>)
           : null,
       id: map['id'] != null ? map['id'] as int : null,
       originalLanguage: map['original_language'] != null

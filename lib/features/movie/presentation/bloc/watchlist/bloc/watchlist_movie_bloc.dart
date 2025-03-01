@@ -19,8 +19,6 @@ class WatchlistMovieBloc
   FutureOr<void> addFilmToWatchlist(
       AddFilmToWatchlist event, Emitter<WatchlistMovieState> emit) async {
     final response = await _addToWatchlist.call(event.film);
-    print("ini bloc");
-    print(response);
     response.fold(
       (failure) {},
       (film) {

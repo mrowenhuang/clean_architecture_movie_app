@@ -300,7 +300,9 @@ class HomeMoviePage extends StatelessWidget {
               },
             );
           }
-          return const SizedBox();
+          return const Center(
+            child: Text("Something wrong"),
+          );
         },
       ),
     );
@@ -388,7 +390,7 @@ class HomeMoviePage extends StatelessWidget {
                                           MainAxisAlignment.spaceBetween,
                                       children: [
                                         SizedBox(
-                                          width: 150,
+                                          width: 140,
                                           child: CustomText(
                                             text: data.title.toString(),
                                             fontsize: 14,
@@ -483,7 +485,9 @@ class HomeMoviePage extends StatelessWidget {
               },
             );
           }
-          return const SizedBox();
+          return const Center(
+            child: Text("Something wrong"),
+          );
         },
       ),
     );

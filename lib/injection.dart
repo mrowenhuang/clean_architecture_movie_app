@@ -1,5 +1,6 @@
 import 'package:clean_architecture_movie_app/features/movie/data/datasources/local/local_data_sources.dart';
 import 'package:clean_architecture_movie_app/features/movie/data/datasources/remote/remote_data_sorces.dart';
+import 'package:clean_architecture_movie_app/features/movie/data/models/film_models.dart';
 import 'package:clean_architecture_movie_app/features/movie/data/repositories/movie_repository_impl.dart';
 import 'package:clean_architecture_movie_app/features/movie/domain/repositories/movie_repository.dart';
 import 'package:clean_architecture_movie_app/features/movie/domain/usecases/add_to_watchlist.dart';
@@ -19,6 +20,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 final sl = GetIt.instance;
 
 Future<void> initializeDependecies() async {
+  Hive.registerAdapter(FilmModelsAdapter());
   var box = await Hive.openBox("watchlist_box");
 
   sl.registerSingleton(box);
@@ -64,7 +66,7 @@ Future<void> initializeDependecies() async {
   // TODO : REPOSITORIES
 
   sl.registerLazySingleton<MovieRepository>(
-    () => MovieRepositoryImpl(sl(), sl(),sl()),
+    () => MovieRepositoryImpl(sl(), sl(), sl()),
   );
 
   // TODO : DATA SOURCES

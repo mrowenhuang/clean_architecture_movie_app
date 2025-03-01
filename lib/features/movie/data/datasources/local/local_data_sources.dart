@@ -12,6 +12,8 @@ class LocalDataSourcesImpl implements LocalDataSources {
 
   @override
   Future<List<FilmModels>> getWatchListMovies() async {
-    return await _box.get("watchlist");
+    final List<FilmModels> filmData = await _box.get("watchlist");
+
+    return filmData;
   }
 }

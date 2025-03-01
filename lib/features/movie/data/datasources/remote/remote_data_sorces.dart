@@ -27,6 +27,8 @@ class RemoteDataSorcesImpl implements RemoteDataSorces {
           return FilmModels.fromMap(film);
         },
       ).toList();
+
+      print(filmData);
       return filmData;
     } else {
       throw ServerException();

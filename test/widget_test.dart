@@ -8,10 +8,7 @@
 import 'package:clean_architecture_movie_app/features/movie/data/datasources/remote/remote_data_sorces.dart';
 
 void main() async {
-  final resposne = await RemoteDataSorcesImpl().getSearchMovies("one");
+  final resposne = await RemoteDataSorcesImpl().getTopRatedMovies();
 
-  for (var data in resposne.results!) {
-    print(data.title);
-  }
-
+  print(resposne);
 }

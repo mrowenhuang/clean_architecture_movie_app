@@ -20,7 +20,6 @@ class MovieRepositoryImpl implements MovieRepository {
   Future<Either<ServerFailure, List<FilmEntities>>> getTopRatedMovies() async {
     try {
       final List<FilmModels> film = await _remoteDataSorces.getTopRatedMovies();
-
       return right(film);
     } catch (e) {
       return left(
@@ -71,19 +70,42 @@ class MovieRepositoryImpl implements MovieRepository {
   @override
   Future<Either<ServerFailure, List<FilmEntities>>> addToWatchList(
       FilmEntities film) async {
-    print(film.title);
-
     try {
-      await _box.put("watchlist", film);
+      final List<FilmModels> filmData = [];
+      filmData.add(
+        FilmModels(
+          backdropPath: film.backdropPath,
+          description: film.description,
+          fav: film.fav,
+          id: film.id,
+          genreIds: film.genreIds,
+          originalLanguage: film.originalLanguage,
+          originalTitle: film.originalTitle,
+          overview: film.overview,
+          popularity: film.popularity,
+          posterPath: film.posterPath,
+          releaseDate: film.releaseDate,
+          title: film.title,
+          video: film.video,
+          voteAverage: film.voteAverage,
+          voteCount: film.voteCount,
+        ),
+      );
+      _box.put("watchlist", filmData);
 
-      print('Ini dari rps imp');
-
-      final List<FilmEntities> data =
+      final List<FilmModels> data =
           await _localDataSources.getWatchListMovies();
 
       return right(data);
     } catch (e) {
       return left(ServerFailure());
     }
+  }
+
+  @override
+  Future<Either<ServerFailure, List<FilmEntities>>> getWatchListMovies(
+      FilmEntities film) {
+    // TODO: implement getWatchListMovies
+    throw UnimplementedError();
   }
 }
