@@ -11,11 +11,11 @@ class SearchMovieBloc extends Bloc<SearchMovieEvent, SearchMovieState> {
   final GetSearchMovies _getSearchMovies;
 
   SearchMovieBloc(this._getSearchMovies) : super(SearchMovieInitial()) {
-    on<GetSearchMovie>(getSearchMovie);
+    on<GenerateSearchMovie>(getSearchMovie);
   }
 
   FutureOr<void> getSearchMovie(
-      GetSearchMovie event, Emitter<SearchMovieState> emit) async {
+      GenerateSearchMovie event, Emitter<SearchMovieState> emit) async {
     emit(SearchMovieLoadingState());
 
     final response = await _getSearchMovies.call(event.keyword);

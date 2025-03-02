@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clean_architecture_movie_app/common/navigator/app_navigator.dart';
 import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
 import 'package:clean_architecture_movie_app/core/configs/app_theme.dart';
+import 'package:clean_architecture_movie_app/features/movie/data/models/film_models.dart';
+import 'package:clean_architecture_movie_app/features/movie/domain/entities/film_entities.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/page_control/cubit/page_control_cubit.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/popular_movie/popular_movie_bloc.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/top_rated_movie/top_rated_movie_bloc.dart';
@@ -160,72 +162,92 @@ class HomeMoviePage extends StatelessWidget {
     return SizedBox(
       height: 150,
       width: constraints.maxWidth,
-      child: ListView.builder(
-        physics: const BouncingScrollPhysics(),
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(vertical: 10),
-        itemCount: 5,
-        itemBuilder: (context, index) {
-          return Padding(
-            padding: const EdgeInsets.only(right: 15),
-            child: Column(
-              children: [
-                Material(
-                  elevation: 7,
-                  borderRadius: BorderRadius.circular(15),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: Stack(
-                      children: [
-                        CachedNetworkImage(
-                          fit: BoxFit.fill,
-                          imageUrl: "https://picsum.photos/id/24$index/200/300",
-                          placeholder: (context, url) {
-                            return const Center(
-                              child: CupertinoActivityIndicator(
-                                color: AppColor.primary,
+      child: BlocBuilder<WatchlistMovieBloc, WatchlistMovieState>(
+        bloc: context.read<WatchlistMovieBloc>(),
+        builder: (context, state) {
+          print(state);
+          if (state.runtimeType == LoadingGenerateWatchlistState) {
+            return const Center(
+              child: CupertinoActivityIndicator(
+                color: AppColor.primary,
+              ),
+            );
+          } else if (state.runtimeType == SuccesGetWatchlistState) {
+            print("run");
+            state as SuccesGetWatchlistState;
+            ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.symmetric(vertical: 10),
+              itemCount: state.film.length,
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.only(right: 15),
+                  child: Column(
+                    children: [
+                      Material(
+                        elevation: 7,
+                        borderRadius: BorderRadius.circular(15),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Stack(
+                            children: [
+                              CachedNetworkImage(
+                                fit: BoxFit.fill,
+                                imageUrl:
+                                    "https://picsum.photos/id/24$index/200/300",
+                                placeholder: (context, url) {
+                                  return const Center(
+                                    child: CupertinoActivityIndicator(
+                                      color: AppColor.primary,
+                                    ),
+                                  );
+                                },
+                                height: 100,
+                                width: 180,
                               ),
-                            );
-                          },
-                          height: 100,
-                          width: 180,
-                        ),
-                        Positioned(
-                          right: 0,
-                          child: Container(
-                            width: 60,
-                            height: 25,
-                            decoration: const BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  blurRadius: 8,
-                                  color: AppColor.shadow,
-                                  offset: Offset(0, 4),
+                              Positioned(
+                                right: 0,
+                                child: Container(
+                                  width: 60,
+                                  height: 25,
+                                  decoration: const BoxDecoration(
+                                    boxShadow: [
+                                      BoxShadow(
+                                        blurRadius: 8,
+                                        color: AppColor.shadow,
+                                        offset: Offset(0, 4),
+                                      ),
+                                    ],
+                                    color: AppColor.primary,
+                                    borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(5),
+                                    ),
+                                  ),
+                                  alignment: Alignment.center,
+                                  child: const Text(
+                                    "9:00",
+                                    style: TextStyle(
+                                      color: AppColor.secondary,
+                                      fontSize: 12,
+                                    ),
+                                  ),
                                 ),
-                              ],
-                              color: AppColor.primary,
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(5),
                               ),
-                            ),
-                            alignment: Alignment.center,
-                            child: const Text(
-                              "9:00",
-                              style: TextStyle(
-                                color: AppColor.secondary,
-                                fontSize: 12,
-                              ),
-                            ),
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                      const SizedBox(height: 10),
+                      const CustomText(text: "Movie Name"),
+                    ],
                   ),
-                ),
-                const SizedBox(height: 10),
-                const CustomText(text: "Movie Name"),
-              ],
-            ),
+                );
+              },
+            );
+          }
+          return const Center(
+            child: Text("Something wrong"),
           );
         },
       ),
@@ -311,182 +333,207 @@ class HomeMoviePage extends StatelessWidget {
   Widget _popular(BuildContext context, BoxConstraints constraints) {
     return SizedBox(
       height: constraints.maxHeight,
-      child: BlocBuilder<PopularMovieBloc, PopularMovieState>(
-        bloc: context.read<PopularMovieBloc>(),
-        builder: (context, state) {
-          if (state.runtimeType == PopularMovieLoadingState) {
-            return const Center(
-              child: CupertinoActivityIndicator(
-                color: AppColor.primary,
+      child: BlocConsumer<WatchlistMovieBloc, WatchlistMovieState>(
+        listener: (context, state) {
+          if (state is SuccessAddToWatchlistState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                duration: Duration(seconds: 1),
+                content: Text(state.message),
               ),
             );
-          } else if (state.runtimeType == PopularMovieSuccessState) {
-            state as PopularMovieSuccessState;
-            return ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemCount: state.films.length,
-              itemBuilder: (context, index) {
-                var data = state.films[index];
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Stack(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(5),
-                        width: constraints.maxWidth,
-                        height: 200,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15),
-                          color: AppColor.secondary,
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 20),
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: AppColor.shadow,
-                                      blurRadius: 10,
-                                      offset: Offset(-10, 10),
-                                    )
-                                  ],
-                                  borderRadius: BorderRadius.circular(10),
-                                ),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(10),
-                                  child: CachedNetworkImage(
-                                    imageUrl:
-                                        "https://image.tmdb.org/t/p/w780${data.posterPath}",
-                                    placeholder: (context, url) {
-                                      return const Center(
-                                        child: CupertinoActivityIndicator(
-                                          color: AppColor.primary,
-                                        ),
-                                      );
-                                    },
-                                    fit: BoxFit.fill,
-                                    width: 100,
-                                    height: 160,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Expanded(
-                              child: Padding(
-                                padding: const EdgeInsets.only(
-                                  right: 15,
-                                  top: 20,
-                                  left: 20,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        SizedBox(
-                                          width: 140,
-                                          child: CustomText(
-                                            text: data.title.toString(),
-                                            fontsize: 14,
-                                            color: AppColor.primary,
-                                            align: TextAlign.left,
-                                          ),
-                                        ),
-                                        GestureDetector(
-                                          onTap: () {
-                                            AppNavigator.push(
-                                              context,
-                                              DetailPage(
-                                                film: data,
-                                              ),
-                                            );
-                                          },
-                                          child: Container(
-                                            width: 40,
-                                            height: 20,
-                                            decoration: BoxDecoration(
-                                              color: AppColor.primary,
-                                              borderRadius:
-                                                  BorderRadius.circular(
-                                                5,
-                                              ),
-                                            ),
-                                            alignment: Alignment.center,
-                                            child: const Icon(
-                                              Icons.more_horiz_outlined,
-                                              color: AppColor.secondary,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(height: 5),
-                                    const CustomText(
-                                      text: "Genre",
-                                      color: AppColor.primary,
-                                      fontsize: 11,
-                                    ),
-                                    const SizedBox(height: 15),
-                                    Text(
-                                      data.overview.toString(),
-                                      maxLines: 7,
-                                      textAlign: TextAlign.justify,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: const TextStyle(
-                                        fontSize: 11,
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 5,
-                        right: 5,
-                        child: GestureDetector(
-                          onTap: () {
-                            context
-                                .read<WatchlistMovieBloc>()
-                                .add(AddFilmToWatchlist(film: data));
-                            print("tapped");
-                          },
-                          child: Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: AppColor.primary,
-                              borderRadius: BorderRadius.circular(100),
-                              boxShadow: const [
-                                BoxShadow(
-                                    blurRadius: 10,
-                                    offset: Offset(-1, 5),
-                                    color: AppColor.shadow)
-                              ],
-                            ),
-                            child: const Icon(
-                              Icons.bookmark_add_outlined,
-                              color: AppColor.secondary,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
+          } else if (state is SuccesRemoveWatchlistState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+              ),
             );
           }
-          return const Center(
-            child: Text("Something wrong"),
+        },
+        builder: (context, state) {
+          return BlocBuilder<PopularMovieBloc, PopularMovieState>(
+            bloc: context.read<PopularMovieBloc>(),
+            builder: (context, state) {
+              if (state.runtimeType == PopularMovieLoadingState) {
+                return const Center(
+                  child: CupertinoActivityIndicator(
+                    color: AppColor.primary,
+                  ),
+                );
+              } else if (state.runtimeType == PopularMovieSuccessState) {
+                state as PopularMovieSuccessState;
+                return ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemCount: state.films.length,
+                  itemBuilder: (context, index) {
+                    var data = state.films[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(bottom: 10),
+                      child: Stack(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(5),
+                            width: constraints.maxWidth,
+                            height: 200,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(15),
+                              color: AppColor.secondary,
+                            ),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 20),
+                                  child: DecoratedBox(
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: AppColor.shadow,
+                                          blurRadius: 10,
+                                          offset: Offset(-10, 10),
+                                        )
+                                      ],
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(10),
+                                      child: CachedNetworkImage(
+                                        imageUrl:
+                                            "https://image.tmdb.org/t/p/w780${data.posterPath}",
+                                        placeholder: (context, url) {
+                                          return const Center(
+                                            child: CupertinoActivityIndicator(
+                                              color: AppColor.primary,
+                                            ),
+                                          );
+                                        },
+                                        fit: BoxFit.fill,
+                                        width: 100,
+                                        height: 160,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                      right: 15,
+                                      top: 20,
+                                      left: 20,
+                                    ),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            SizedBox(
+                                              width: 140,
+                                              child: CustomText(
+                                                text: data.title.toString(),
+                                                fontsize: 14,
+                                                color: AppColor.primary,
+                                                align: TextAlign.left,
+                                              ),
+                                            ),
+                                            GestureDetector(
+                                              onTap: () {
+                                                AppNavigator.push(
+                                                  context,
+                                                  DetailPage(
+                                                    film: data,
+                                                  ),
+                                                );
+                                              },
+                                              child: Container(
+                                                width: 40,
+                                                height: 20,
+                                                decoration: BoxDecoration(
+                                                  color: AppColor.primary,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                    5,
+                                                  ),
+                                                ),
+                                                alignment: Alignment.center,
+                                                child: const Icon(
+                                                  Icons.more_horiz_outlined,
+                                                  color: AppColor.secondary,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        const SizedBox(height: 5),
+                                        const CustomText(
+                                          text: "Genre",
+                                          color: AppColor.primary,
+                                          fontsize: 11,
+                                        ),
+                                        const SizedBox(height: 15),
+                                        Text(
+                                          data.overview.toString(),
+                                          maxLines: 7,
+                                          textAlign: TextAlign.justify,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                            fontSize: 11,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 5,
+                            right: 5,
+                            child: GestureDetector(
+                              onTap: () {
+                                data.fav = !data.fav!;
+                                context.read<WatchlistMovieBloc>().add(
+                                      AddFilmToWatchlist(film: data),
+                                    );
+                                print(data.fav);
+                              },
+                              child: Container(
+                                width: 40,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: AppColor.primary,
+                                  borderRadius: BorderRadius.circular(100),
+                                  boxShadow: const [
+                                    BoxShadow(
+                                      blurRadius: 10,
+                                      offset: Offset(-1, 5),
+                                      color: AppColor.shadow,
+                                    )
+                                  ],
+                                ),
+                                child: Icon(
+                                  data.fav!
+                                      ? Icons.bookmark
+                                      : Icons.bookmark_add_outlined,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                );
+              }
+              return const Center(
+                child: Text("Something wrong"),
+              );
+            },
           );
         },
       ),

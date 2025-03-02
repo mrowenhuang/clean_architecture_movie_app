@@ -26,16 +26,17 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
+        
         BlocProvider(create: (context) => sl<SearchMovieBloc>()),
         BlocProvider(create: (context) => sl<PageControlCubit>()),
         BlocProvider(
-          create: (context) => sl<TopRatedMovieBloc>()..add(GetTopRatedMovie()),
+          create: (context) => sl<TopRatedMovieBloc>()..add(GenerateTopRatedMovie()),
         ),
         BlocProvider(
-          create: (context) => sl<PopularMovieBloc>()..add(GetPopularMovie()),
+          create: (context) => sl<PopularMovieBloc>()..add(GeneratePopularMovie()),
         ),
         BlocProvider(create: (context) => sl<FilterMovieBloc>()),
-        BlocProvider(create: (context) => sl<WatchlistMovieBloc>()),
+        BlocProvider( create: (context) => sl<WatchlistMovieBloc>()..add(GenerateWatchListMovies())),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

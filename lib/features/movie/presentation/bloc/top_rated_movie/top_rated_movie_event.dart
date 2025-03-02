@@ -7,4 +7,4 @@ abstract class TopRatedMovieEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class GetTopRatedMovie extends TopRatedMovieEvent{}
+class GenerateTopRatedMovie extends TopRatedMovieEvent{}

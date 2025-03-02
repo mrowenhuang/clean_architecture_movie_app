@@ -29,7 +29,7 @@ class FilmModelsAdapter extends TypeAdapter<FilmModels> {
       title: fields[9] as String?,
       description: fields[10] as String?,
       video: fields[11] as bool?,
-      fav: fields[12] as bool?,
+      fav: fields[12] as bool? ?? false,
       voteAverage: fields[13] as double?,
       voteCount: fields[14] as int?,
     );

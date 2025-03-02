@@ -52,7 +52,7 @@ class SearchPage extends StatelessWidget {
                   textEditingController: searchCont,
                   onSubmmited: (value) {
                     context.read<SearchMovieBloc>().add(
-                          GetSearchMovie(keyword: value),
+                          GenerateSearchMovie(keyword: value),
                         );
                   },
                 ),

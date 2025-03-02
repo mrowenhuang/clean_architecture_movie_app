@@ -19,14 +19,14 @@ final class GetFilterMovieEvent extends FilterMovieEvent {
   });
 }
 
-final class GetLanguageMovieEvent extends FilterMovieEvent {
+final class GenerateLanguageMovieEvent extends FilterMovieEvent {
   final String language;
 
-  const GetLanguageMovieEvent({required this.language});
+  const GenerateLanguageMovieEvent({required this.language});
 }
 
-final class GetYearMovieEvent extends FilterMovieEvent {
+final class GenerateYearMovieEvent extends FilterMovieEvent {
   final String year;
 
-  const GetYearMovieEvent({required this.year});
+  const GenerateYearMovieEvent({required this.year});
 }

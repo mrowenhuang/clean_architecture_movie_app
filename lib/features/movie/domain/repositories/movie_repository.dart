@@ -13,8 +13,10 @@ abstract class MovieRepository {
   Future<Either<ServerFailure, SearchFilmEnities>> getlanguageMovies(
       String language, String year,
       {String page = "1"});
-  Future<Either<ServerFailure, List<FilmEntities>>> addToWatchList(
+  Future<Either<ServerFailure, String>> addToWatchList(
       FilmEntities film);
-  Future<Either<ServerFailure, List<FilmEntities>>> getWatchListMovies(
-      FilmModels film);
+  Future<Either<ServerFailure, String>> removeFromWatchList(
+      FilmEntities film);
+  Future<Either<ServerFailure, List<FilmEntities>>> getWatchListMovies();
+  
 }

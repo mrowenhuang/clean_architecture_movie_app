@@ -12,11 +12,11 @@ class TopRatedMovieBloc extends Bloc<TopRatedMovieEvent, TopRatedMovieState> {
   final GetTopRatedMovies _getTopRatedMovies;
 
   TopRatedMovieBloc(this._getTopRatedMovies) : super(MovieInitial()) {
-    on<GetTopRatedMovie>(getTopRatedMovie);
+    on<GenerateTopRatedMovie>(getTopRatedMovie);
   }
 
   FutureOr<void> getTopRatedMovie(
-      GetTopRatedMovie event, Emitter<TopRatedMovieState> emit) async {
+      GenerateTopRatedMovie event, Emitter<TopRatedMovieState> emit) async {
     emit(TopRatedMovieLoadingState());
 
     final response = await _getTopRatedMovies();

@@ -12,6 +12,7 @@ class MovieRepositoryImpl implements MovieRepository {
   final RemoteDataSorces _remoteDataSorces;
   final LocalDataSources _localDataSources;
   final Box _box;
+  List<FilmModels> filmData = [];
 
   MovieRepositoryImpl(
       this._remoteDataSorces, this._box, this._localDataSources);
@@ -68,15 +69,14 @@ class MovieRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<Either<ServerFailure, List<FilmEntities>>> addToWatchList(
+  Future<Either<ServerFailure, String>> addToWatchList(
       FilmEntities film) async {
     try {
-      final List<FilmModels> filmData = [];
       filmData.add(
         FilmModels(
           backdropPath: film.backdropPath,
           description: film.description,
-          fav: film.fav,
+          fav: film.fav!,
           id: film.id,
           genreIds: film.genreIds,
           originalLanguage: film.originalLanguage,
@@ -93,19 +93,37 @@ class MovieRepositoryImpl implements MovieRepository {
       );
       _box.put("watchlist", filmData);
 
-      final List<FilmModels> data =
-          await _localDataSources.getWatchListMovies();
-
-      return right(data);
+      return right("Already Add To Watchlist");
     } catch (e) {
       return left(ServerFailure());
     }
   }
 
   @override
-  Future<Either<ServerFailure, List<FilmEntities>>> getWatchListMovies(
-      FilmEntities film) {
-    // TODO: implement getWatchListMovies
-    throw UnimplementedError();
+  Future<Either<ServerFailure, List<FilmEntities>>> getWatchListMovies() async {
+    try {
+      final List<FilmModels> film =
+          await _localDataSources.getWatchListMovies();
+
+      filmData = film;
+
+      return right(film);
+    } catch (e) {
+      return left(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<ServerFailure, String>> removeFromWatchList(
+      FilmEntities film) async {
+    try {
+      filmData.removeWhere(
+        (element) => element.id == film.id,
+      );
+      _box.put("watchlist", filmData);
+      return right("Remove From Watchlist");
+    } catch (e) {
+      return left(ServerFailure());
+    }
   }
 }

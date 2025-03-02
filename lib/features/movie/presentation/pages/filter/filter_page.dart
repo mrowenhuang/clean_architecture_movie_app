@@ -91,7 +91,7 @@ class FilterPage extends StatelessWidget {
                                     ),
                                     onChanged: (value) {
                                       context.read<FilterMovieBloc>().add(
-                                            GetYearMovieEvent(
+                                            GenerateYearMovieEvent(
                                               year: value.year.toString(),
                                             ),
                                           );
@@ -174,7 +174,7 @@ class FilterPage extends StatelessWidget {
                           context.read<FilterMovieBloc>().language,
                       onSelected: (value) {
                         context.read<FilterMovieBloc>().add(
-                              GetLanguageMovieEvent(
+                              GenerateLanguageMovieEvent(
                                 language: value.toString(),
                               ),
                             );

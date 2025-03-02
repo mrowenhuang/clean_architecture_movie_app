@@ -8,4 +8,4 @@ sealed class PopularMovieEvent extends Equatable {
 }
 
 
-final class GetPopularMovie extends PopularMovieEvent {}
+final class GeneratePopularMovie extends PopularMovieEvent {}

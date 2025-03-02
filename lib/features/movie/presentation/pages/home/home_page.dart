@@ -1,6 +1,6 @@
 import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/page_control/cubit/page_control_cubit.dart';
-import 'package:clean_architecture_movie_app/features/movie/presentation/pages/bookmark/bookmark_page.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/pages/watchlist/watchlist_page.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/pages/filter/filter_page.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/pages/home/home_movie_page.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/pages/search/search_page.dart';
@@ -15,7 +15,7 @@ class HomePage extends StatelessWidget {
     const HomeMoviePage(),
     SearchPage(),
     const FilterPage(),
-    const BookmarkPage()
+    const WatchlistPage()
   ];
 
   @override

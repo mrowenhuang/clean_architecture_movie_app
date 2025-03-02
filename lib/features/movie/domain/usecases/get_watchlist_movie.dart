@@ -3,12 +3,12 @@ import 'package:clean_architecture_movie_app/features/movie/domain/entities/film
 import 'package:clean_architecture_movie_app/features/movie/domain/repositories/movie_repository.dart';
 import 'package:dartz/dartz.dart';
 
-class AddToWatchlist {
+class GetWatchlistMovie {
   final MovieRepository _movieRepository;
 
-  AddToWatchlist(this._movieRepository);
+  GetWatchlistMovie(this._movieRepository);
 
-  Future<Either<ServerFailure, String>> call(FilmEntities film) async {
-    return await _movieRepository.addToWatchList(film);
+  Future<Either<ServerFailure, List<FilmEntities>>> call() async {
+    return await _movieRepository.getWatchListMovies();
   }
 }

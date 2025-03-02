@@ -7,8 +7,8 @@ sealed class SearchMovieEvent extends Equatable {
   List<Object> get props => [];
 }
 
-final class GetSearchMovie extends SearchMovieEvent {
+final class GenerateSearchMovie extends SearchMovieEvent {
   final String keyword;
 
-  const GetSearchMovie({required this.keyword});
+  const GenerateSearchMovie({required this.keyword});
 }

@@ -28,7 +28,6 @@ class RemoteDataSorcesImpl implements RemoteDataSorces {
         },
       ).toList();
 
-      print(filmData);
       return filmData;
     } else {
       throw ServerException();

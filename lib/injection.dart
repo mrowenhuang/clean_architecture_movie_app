@@ -8,6 +8,8 @@ import 'package:clean_architecture_movie_app/features/movie/domain/usecases/get_
 import 'package:clean_architecture_movie_app/features/movie/domain/usecases/get_popular_movies.dart';
 import 'package:clean_architecture_movie_app/features/movie/domain/usecases/get_search_movies.dart';
 import 'package:clean_architecture_movie_app/features/movie/domain/usecases/get_top_rated_movies.dart';
+import 'package:clean_architecture_movie_app/features/movie/domain/usecases/get_watchlist_movie.dart';
+import 'package:clean_architecture_movie_app/features/movie/domain/usecases/remove_watchlist.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/filter_movie/bloc/filter_movie_bloc.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/page_control/cubit/page_control_cubit.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/popular_movie/popular_movie_bloc.dart';
@@ -40,7 +42,7 @@ Future<void> initializeDependecies() async {
     () => FilterMovieBloc(sl()),
   );
   sl.registerFactory(
-    () => WatchlistMovieBloc(sl()),
+    () => WatchlistMovieBloc(sl(), sl(),sl()),
   );
   sl.registerFactory(
     () => PageControlCubit(),
@@ -61,6 +63,12 @@ Future<void> initializeDependecies() async {
   );
   sl.registerLazySingleton(
     () => AddToWatchlist(sl()),
+  );
+  sl.registerLazySingleton(
+    () => GetWatchlistMovie(sl()),
+  );
+  sl.registerLazySingleton(
+    () => RemoveWatchlist(sl()),
   );
 
   // TODO : REPOSITORIES

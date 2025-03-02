@@ -12,3 +12,5 @@ final class AddFilmToWatchlist extends WatchlistMovieEvent {
 
   const AddFilmToWatchlist({required this.film});
 }
+
+final class GenerateWatchListMovies extends WatchlistMovieEvent {}

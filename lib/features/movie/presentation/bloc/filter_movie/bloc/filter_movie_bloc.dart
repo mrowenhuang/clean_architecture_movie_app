@@ -15,8 +15,8 @@ class FilterMovieBloc extends Bloc<FilterMovieEvent, FilterMovieState> {
 
   FilterMovieBloc(this._getLanguageMovies) : super(FilterMovieInitial()) {
     on<GetFilterMovieEvent>(getFilterMovie);
-    on<GetLanguageMovieEvent>(getLanguageMovieEvent);
-    on<GetYearMovieEvent>(getYearMovieEvent);
+    on<GenerateLanguageMovieEvent>(getLanguageMovieEvent);
+    on<GenerateYearMovieEvent>(getYearMovieEvent);
   }
 
   FutureOr<void> getFilterMovie(
@@ -41,13 +41,13 @@ class FilterMovieBloc extends Bloc<FilterMovieEvent, FilterMovieState> {
   }
 
   FutureOr<void> getYearMovieEvent(
-      GetYearMovieEvent event, Emitter<FilterMovieState> emit) {
+      GenerateYearMovieEvent event, Emitter<FilterMovieState> emit) {
     year = event.year;
     add(GetFilterMovieEvent(language: language, year: event.year, page: "1"));
   }
 
   FutureOr<void> getLanguageMovieEvent(
-      GetLanguageMovieEvent event, Emitter<FilterMovieState> emit) {
+      GenerateLanguageMovieEvent event, Emitter<FilterMovieState> emit) {
     language = event.language;
     add(GetFilterMovieEvent(language: event.language, year: year, page: "1"));
   }

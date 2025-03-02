@@ -1,8 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
-import 'package:clean_architecture_movie_app/features/movie/domain/entities/film_entities.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+import 'package:clean_architecture_movie_app/features/movie/domain/entities/film_entities.dart';
 
 part 'film_models.g.dart';
 
@@ -45,7 +46,7 @@ class FilmModels extends FilmEntities {
   final bool? video;
 
   @HiveField(12)
-  final bool? fav;
+  bool? fav;
 
   @HiveField(13)
   final double? voteAverage;
@@ -66,7 +67,7 @@ class FilmModels extends FilmEntities {
     this.title,
     this.description,
     this.video,
-    this.fav,
+    this.fav = false,
     this.voteAverage,
     this.voteCount,
   }) : super(
@@ -89,8 +90,8 @@ class FilmModels extends FilmEntities {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'backdrop_path': backdropPath,
-      'genre_ids': genreIds?.map((e) => e).toList(),
+      'backdrop_Path': backdropPath,
+      'genre_ids': genreIds,
       'id': id,
       'original_language': originalLanguage,
       'original_title': originalTitle,
@@ -110,9 +111,9 @@ class FilmModels extends FilmEntities {
   factory FilmModels.fromMap(Map<String, dynamic> map) {
     return FilmModels(
       backdropPath:
-          map['backdrop_path'] != null ? map['backdrop_path'] as String : null,
+          map['backdrop_Path'] != null ? map['backdrop_Path'] as String : null,
       genreIds: map['genre_ids'] != null
-          ? List<int>.from(map['genre_ids'] as List<int>)
+          ? (map['genre_ids'] as List).map((e) => (e as num).toInt()).toList()
           : null,
       id: map['id'] != null ? map['id'] as int : null,
       originalLanguage: map['original_language'] != null
@@ -132,7 +133,7 @@ class FilmModels extends FilmEntities {
       description:
           map['description'] != null ? map['description'] as String : null,
       video: map['video'] != null ? map['video'] as bool : null,
-      fav: map['fav'] != null ? map['fav'] as bool : null,
+      fav: map['fav'] is bool ? map['fav'] : false,
       voteAverage:
           map['vote_average'] != null ? map['vote_average'] as double : null,
       voteCount: map['vote_count'] != null ? map['vote_count'] as int : null,
@@ -143,4 +144,24 @@ class FilmModels extends FilmEntities {
 
   factory FilmModels.fromJson(String source) =>
       FilmModels.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  FilmModels toggleFav() {
+    return FilmModels(
+      fav: !fav!, // Toggle nilai fav
+      backdropPath: backdropPath,
+      genreIds: genreIds,
+      id: id,
+      originalLanguage: originalLanguage,
+      originalTitle: originalTitle,
+      overview: overview,
+      popularity: popularity,
+      posterPath: posterPath,
+      releaseDate: releaseDate,
+      title: title,
+      description: description,
+      video: video,
+      voteAverage: voteAverage,
+      voteCount: voteCount,
+    );
+  }
 }
