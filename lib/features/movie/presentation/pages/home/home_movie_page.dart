@@ -165,22 +165,20 @@ class HomeMoviePage extends StatelessWidget {
       child: BlocBuilder<WatchlistMovieBloc, WatchlistMovieState>(
         bloc: context.read<WatchlistMovieBloc>(),
         builder: (context, state) {
-          print(state);
-          if (state.runtimeType == LoadingGenerateWatchlistState) {
+          if (state is LoadingGenerateWatchlistState) {
             return const Center(
               child: CupertinoActivityIndicator(
                 color: AppColor.primary,
               ),
             );
-          } else if (state.runtimeType == SuccesGetWatchlistState) {
-            print("run");
-            state as SuccesGetWatchlistState;
-            ListView.builder(
+          } else if (state is SuccesGetWatchlistState) {
+            return ListView.builder(
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(vertical: 10),
               itemCount: state.film.length,
               itemBuilder: (context, index) {
+                final data = state.film[index];
                 return Padding(
                   padding: const EdgeInsets.only(right: 15),
                   child: Column(
@@ -195,7 +193,7 @@ class HomeMoviePage extends StatelessWidget {
                               CachedNetworkImage(
                                 fit: BoxFit.fill,
                                 imageUrl:
-                                    "https://picsum.photos/id/24$index/200/300",
+                                    "https://image.tmdb.org/t/p/w300/${data.backdropPath}",
                                 placeholder: (context, url) {
                                   return const Center(
                                     child: CupertinoActivityIndicator(
@@ -239,16 +237,26 @@ class HomeMoviePage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 10),
-                      const CustomText(text: "Movie Name"),
+                      SizedBox(
+                        width: 180,
+                        child: CustomText(
+                          text: data.title.toString(),
+                        ),
+                      ),
                     ],
                   ),
                 );
               },
             );
+          } else if (state is ErrorGetWatchlistState) {
+            return Center(
+                child: CustomText(
+              text: state.message,
+              fontWeight: FontWeight.bold,
+              fontsize: 12,
+            ));
           }
-          return const Center(
-            child: Text("Something wrong"),
-          );
+          return const SizedBox();
         },
       ),
     );
@@ -261,14 +269,13 @@ class HomeMoviePage extends StatelessWidget {
       child: BlocBuilder<TopRatedMovieBloc, TopRatedMovieState>(
         bloc: context.read<TopRatedMovieBloc>(),
         builder: (context, state) {
-          if (state.runtimeType == TopRatedMovieLoadingState) {
+          if (state is TopRatedMovieLoadingState) {
             return const Center(
               child: CupertinoActivityIndicator(
                 color: AppColor.primary,
               ),
             );
-          } else if (state.runtimeType == TopRatedMovieSuccessState) {
-            state as TopRatedMovieSuccessState;
+          } else if (state is TopRatedMovieSuccessState) {
             return ListView.builder(
               physics: const BouncingScrollPhysics(),
               itemCount: state.films.length,
@@ -334,39 +341,49 @@ class HomeMoviePage extends StatelessWidget {
     return SizedBox(
       height: constraints.maxHeight,
       child: BlocConsumer<WatchlistMovieBloc, WatchlistMovieState>(
-        listener: (context, state) {
-          if (state is SuccessAddToWatchlistState) {
+        listener: (context, watchListState) {
+          print(watchListState);
+          if (watchListState is SuccessAddToWatchlistState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 duration: Duration(seconds: 1),
-                content: Text(state.message),
+                content: Text(watchListState.message),
               ),
             );
-          } else if (state is SuccesRemoveWatchlistState) {
+          } else if (watchListState is SuccesRemoveWatchlistState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(state.message),
+                content: Text(watchListState.message),
               ),
             );
           }
         },
-        builder: (context, state) {
+        builder: (context, watchListState) {
           return BlocBuilder<PopularMovieBloc, PopularMovieState>(
             bloc: context.read<PopularMovieBloc>(),
             builder: (context, state) {
-              if (state.runtimeType == PopularMovieLoadingState) {
+              if (state is PopularMovieLoadingState) {
                 return const Center(
                   child: CupertinoActivityIndicator(
                     color: AppColor.primary,
                   ),
                 );
-              } else if (state.runtimeType == PopularMovieSuccessState) {
-                state as PopularMovieSuccessState;
+              } else if (state is PopularMovieSuccessState) {
                 return ListView.builder(
                   physics: const BouncingScrollPhysics(),
                   itemCount: state.films.length,
                   itemBuilder: (context, index) {
                     var data = state.films[index];
+                    if (watchListState is SuccesGetWatchlistState) {
+                      for (var element in watchListState.film) {
+                        print(element.id);
+                        if (element.id == data.id) {
+                          data.fav = true;
+                        } else {
+                          data.fav = false;
+                        }
+                      }
+                    }
                     return Padding(
                       padding: const EdgeInsets.only(bottom: 10),
                       child: Stack(
@@ -495,11 +512,9 @@ class HomeMoviePage extends StatelessWidget {
                             right: 5,
                             child: GestureDetector(
                               onTap: () {
-                                data.fav = !data.fav!;
                                 context.read<WatchlistMovieBloc>().add(
                                       AddFilmToWatchlist(film: data),
                                     );
-                                print(data.fav);
                               },
                               child: Container(
                                 width: 40,

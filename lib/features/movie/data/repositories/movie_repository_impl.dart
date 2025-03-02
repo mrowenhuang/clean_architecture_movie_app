@@ -24,7 +24,7 @@ class MovieRepositoryImpl implements MovieRepository {
       return right(film);
     } catch (e) {
       return left(
-        ServerFailure(),
+        ServerFailure(message: e.toString()),
       );
     }
   }
@@ -36,7 +36,7 @@ class MovieRepositoryImpl implements MovieRepository {
           await _remoteDataSorces.getPopularMovies();
       return right(film);
     } catch (e) {
-      return left(ServerFailure());
+      return left(ServerFailure(message: e.toString()));
     }
   }
 
@@ -50,7 +50,7 @@ class MovieRepositoryImpl implements MovieRepository {
 
       return right(film);
     } catch (e) {
-      return left(ServerFailure());
+      return left(ServerFailure(message: e.toString()));
     }
   }
 
@@ -64,7 +64,7 @@ class MovieRepositoryImpl implements MovieRepository {
 
       return right(film);
     } catch (e) {
-      return left(ServerFailure());
+      return left(ServerFailure(message: e.toString()));
     }
   }
 
@@ -95,22 +95,25 @@ class MovieRepositoryImpl implements MovieRepository {
 
       return right("Already Add To Watchlist");
     } catch (e) {
-      return left(ServerFailure());
+      return left(ServerFailure(message: e.toString()));
     }
   }
 
   @override
   Future<Either<ServerFailure, List<FilmEntities>>> getWatchListMovies() async {
-    try {
-      final List<FilmModels> film =
-          await _localDataSources.getWatchListMovies();
+    final response = await _localDataSources.getWatchListMovies();
 
-      filmData = film;
+    return response.fold(
+      (failure) {
+        print(failure.message);
+        return left(ServerFailure(message: failure.message));
+      },
+      (film) {
+        filmData = film;
 
-      return right(film);
-    } catch (e) {
-      return left(ServerFailure());
-    }
+        return right(film);
+      },
+    );
   }
 
   @override
@@ -123,7 +126,7 @@ class MovieRepositoryImpl implements MovieRepository {
       _box.put("watchlist", filmData);
       return right("Remove From Watchlist");
     } catch (e) {
-      return left(ServerFailure());
+      return left(ServerFailure(message: e.toString()));
     }
   }
 }

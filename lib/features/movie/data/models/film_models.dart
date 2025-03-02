@@ -90,7 +90,7 @@ class FilmModels extends FilmEntities {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
-      'backdrop_Path': backdropPath,
+      'backdrop_path': backdropPath,
       'genre_ids': genreIds,
       'id': id,
       'original_language': originalLanguage,
@@ -111,7 +111,7 @@ class FilmModels extends FilmEntities {
   factory FilmModels.fromMap(Map<String, dynamic> map) {
     return FilmModels(
       backdropPath:
-          map['backdrop_Path'] != null ? map['backdrop_Path'] as String : null,
+          map['backdrop_path'] != null ? map['backdrop_path'] as String : null,
       genreIds: map['genre_ids'] != null
           ? (map['genre_ids'] as List).map((e) => (e as num).toInt()).toList()
           : null,

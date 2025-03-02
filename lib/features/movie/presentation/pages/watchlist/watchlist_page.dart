@@ -1,7 +1,11 @@
+import 'package:clean_architecture_movie_app/common/navigator/app_navigator.dart';
 import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
 import 'package:clean_architecture_movie_app/core/configs/app_theme.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/watchlist/bloc/watchlist_movie_bloc.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/pages/detail/detail_page.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/custom_movie_list.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/custom_text.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -36,12 +40,34 @@ class WatchlistPage extends StatelessWidget {
               ),
             ),
             Expanded(
-              child: BlocBuilder<WatchlistMovieBloc, WatchlistMovieState>(
+              child: BlocConsumer<WatchlistMovieBloc, WatchlistMovieState>(
+                listener: (context, state) {
+                  print(state);
+                  if (state is SuccessAddToWatchlistState) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        duration: Duration(seconds: 1),
+                        content: Text(state.message),
+                      ),
+                    );
+                  } else if (state is SuccesRemoveWatchlistState) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(state.message),
+                      ),
+                    );
+                  }
+                },
                 bloc: context.read<WatchlistMovieBloc>()
                   ..add(GenerateWatchListMovies()),
                 builder: (context, state) {
-                  if (state.runtimeType == SuccesGetWatchlistState) {
-                    state as SuccesGetWatchlistState;
+                  if (state is LoadingGenerateWatchlistState) {
+                    return const Center(
+                      child: CupertinoActivityIndicator(
+                        color: AppColor.primary,
+                      ),
+                    );
+                  } else if (state is SuccesGetWatchlistState) {
                     return ListView.builder(
                       itemCount: state.film.length,
                       itemBuilder: (context, index) {
@@ -52,14 +78,28 @@ class WatchlistPage extends StatelessWidget {
                           date: data.releaseDate.toString(),
                           poster: data.posterPath.toString(),
                           language: data.originalLanguage.toString(),
-                          ontap: () {},
+                          ontap: () {
+                            AppNavigator.push(context, DetailPage(film: data));
+                          },
+                          likeTap: () {
+                            context
+                                .read<WatchlistMovieBloc>()
+                                .add(AddFilmToWatchlist(film: data));
+                          },
+                          status: data.fav!,
+                          // status: data.fav!,
                         );
                       },
                     );
+                  } else if (state is ErrorGetWatchlistState) {
+                    return Center(
+                        child: CustomText(
+                      text: state.message,
+                      fontWeight: FontWeight.bold,
+                      fontsize: 12,
+                    ));
                   }
-                  return const Center(
-                    child: Text("Something Was Wrong"),
-                  );
+                  return const SizedBox();
                 },
               ),
             )

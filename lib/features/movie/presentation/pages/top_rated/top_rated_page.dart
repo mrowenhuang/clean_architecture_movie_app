@@ -44,14 +44,13 @@ class TopRatedPage extends StatelessWidget {
               child: BlocBuilder<TopRatedMovieBloc, TopRatedMovieState>(
                 bloc: context.read<TopRatedMovieBloc>(),
                 builder: (context, state) {
-                  if (state.runtimeType == TopRatedMovieLoadingState) {
+                  if (state is TopRatedMovieLoadingState) {
                     return const Center(
                       child: CupertinoActivityIndicator(
                         color: AppColor.primary,
                       ),
                     );
-                  } else if (state.runtimeType == TopRatedMovieSuccessState) {
-                    state as TopRatedMovieSuccessState;
+                  } else if (state is TopRatedMovieSuccessState) {
                     return ListView.builder(
                       itemCount: state.films.length,
                       itemBuilder: (context, index) {
@@ -68,6 +67,8 @@ class TopRatedPage extends StatelessWidget {
                           date: data.releaseDate.toString(),
                           poster: data.posterPath.toString(),
                           language: data.originalLanguage.toString(),
+                          likeTap: () {},
+                          status: false,
                         );
                       },
                     );

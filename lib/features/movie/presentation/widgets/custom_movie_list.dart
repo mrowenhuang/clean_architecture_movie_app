@@ -13,6 +13,8 @@ class CustomMovieList extends StatelessWidget {
     required this.poster,
     required this.language,
     required this.ontap,
+    required this.likeTap,
+    required this.status,
   });
 
   final String title;
@@ -21,6 +23,8 @@ class CustomMovieList extends StatelessWidget {
   final String date;
   final String poster;
   final VoidCallback ontap;
+  final VoidCallback likeTap;
+  final bool status;
 
   @override
   Widget build(BuildContext context) {
@@ -113,22 +117,25 @@ class CustomMovieList extends StatelessWidget {
               Positioned(
                 bottom: 3,
                 right: 3,
-                child: Container(
-                  width: 40,
-                  height: 40,
-                  decoration: BoxDecoration(
-                    color: AppColor.primary,
-                    borderRadius: BorderRadius.circular(100),
-                    boxShadow: const [
-                      BoxShadow(
-                          blurRadius: 10,
-                          offset: Offset(-1, 5),
-                          color: AppColor.shadow)
-                    ],
-                  ),
-                  child: const Icon(
-                    Icons.bookmark_add_outlined,
-                    color: AppColor.secondary,
+                child: GestureDetector(
+                  onTap: likeTap,
+                  child: Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: AppColor.primary,
+                      borderRadius: BorderRadius.circular(100),
+                      boxShadow: const [
+                        BoxShadow(
+                            blurRadius: 10,
+                            offset: Offset(-1, 5),
+                            color: AppColor.shadow)
+                      ],
+                    ),
+                    child: Icon(
+                      status ? Icons.bookmark : Icons.bookmark_add_outlined,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
               ),

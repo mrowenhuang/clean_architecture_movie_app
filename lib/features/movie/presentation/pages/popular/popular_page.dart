@@ -2,6 +2,7 @@ import 'package:clean_architecture_movie_app/common/navigator/app_navigator.dart
 import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
 import 'package:clean_architecture_movie_app/core/configs/app_theme.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/popular_movie/popular_movie_bloc.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/watchlist/bloc/watchlist_movie_bloc.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/pages/detail/detail_page.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/custom_back_button.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/custom_movie_list.dart';
@@ -44,27 +45,41 @@ class PopularPage extends StatelessWidget {
               child: BlocBuilder<PopularMovieBloc, PopularMovieState>(
                 bloc: context.read<PopularMovieBloc>(),
                 builder: (context, state) {
-                  if (state.runtimeType == PopularMovieLoadingState) {
+                  if (state is PopularMovieLoadingState) {
                     return const Center(
                       child: CupertinoActivityIndicator(
                         color: AppColor.primary,
                       ),
                     );
-                  } else if (state.runtimeType == PopularMovieSuccessState) {
-                    state as PopularMovieSuccessState;
+                  } else if (state is PopularMovieSuccessState) {
                     return ListView.builder(
                       itemCount: state.films.length,
                       itemBuilder: (context, index) {
                         var data = state.films[index];
-                        return CustomMovieList(
-                          ontap: () {
-                            AppNavigator.push(context, DetailPage(film: data));
+                        return BlocConsumer<WatchlistMovieBloc,
+                            WatchlistMovieState>(
+                          listener: (context, state) {
+                            print(state);
                           },
-                          title: data.title.toString(),
-                          overview: data.overview.toString(),
-                          date: data.releaseDate.toString(),
-                          poster: data.posterPath.toString(),
-                          language: data.originalLanguage.toString(),
+                          builder: (context, state) {
+                            return CustomMovieList(
+                              ontap: () {
+                                AppNavigator.push(
+                                    context, DetailPage(film: data));
+                              },
+                              title: data.title.toString(),
+                              overview: data.overview.toString(),
+                              date: data.releaseDate.toString(),
+                              poster: data.posterPath.toString(),
+                              language: data.originalLanguage.toString(),
+                              likeTap: () {
+                                context
+                                    .read<WatchlistMovieBloc>()
+                                    .add(AddFilmToWatchlist(film: data));
+                              },
+                              status: data.fav!,
+                            );
+                          },
                         );
                       },
                     );

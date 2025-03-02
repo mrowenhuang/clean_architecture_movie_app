@@ -25,7 +25,7 @@ Future<void> initializeDependecies() async {
   Hive.registerAdapter(FilmModelsAdapter());
   var box = await Hive.openBox("watchlist_box");
 
-  sl.registerSingleton(box);
+  sl.registerLazySingleton(() => box,);
 
   // TODO : BLOC
 

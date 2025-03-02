@@ -72,15 +72,14 @@ class SearchPage extends StatelessWidget {
     return BlocBuilder<SearchMovieBloc, SearchMovieState>(
       bloc: context.read<SearchMovieBloc>(),
       builder: (context, state) {
-        if (state.runtimeType == SearchMovieInitial) {
+        if (state is SearchMovieInitial) {
           return const SizedBox();
-        } else if (state.runtimeType == SearchMovieLoadingState) {
+        } else if (state is SearchMovieLoadingState) {
           return const CustomText(
             text: 'Total Results : ....',
             fontWeight: FontWeight.bold,
           );
-        } else if (state.runtimeType == SearchMovieSuccesState) {
-          state as SearchMovieSuccesState;
+        } else if (state is SearchMovieSuccesState) {
           return CustomText(
             text: 'Total Results : ${state.films.totalResults}',
             fontWeight: FontWeight.bold,
@@ -96,7 +95,7 @@ class SearchPage extends StatelessWidget {
       child: BlocBuilder<SearchMovieBloc, SearchMovieState>(
         bloc: context.read<SearchMovieBloc>(),
         builder: (context, state) {
-          if (state.runtimeType == SearchMovieInitial) {
+          if (state is SearchMovieInitial) {
             return const Center(
               child: CustomText(
                 text: "Try Searching",
@@ -105,14 +104,13 @@ class SearchPage extends StatelessWidget {
                 fontsize: 14,
               ),
             );
-          } else if (state.runtimeType == SearchMovieLoadingState) {
+          } else if (state is SearchMovieLoadingState) {
             return const Center(
               child: CircularProgressIndicator(
                 color: AppColor.primary,
               ),
             );
-          } else if (state.runtimeType == SearchMovieSuccesState) {
-            state as SearchMovieSuccesState;
+          } else if (state is SearchMovieSuccesState) {
             return ListView.builder(
               scrollDirection: Axis.vertical,
               physics: const BouncingScrollPhysics(),
@@ -131,6 +129,7 @@ class SearchPage extends StatelessWidget {
                   date: data.releaseDate.toString(),
                   poster: data.posterPath.toString(),
                   language: data.originalLanguage.toString(),
+                  likeTap: () {}, status: false,
                 );
               },
             );

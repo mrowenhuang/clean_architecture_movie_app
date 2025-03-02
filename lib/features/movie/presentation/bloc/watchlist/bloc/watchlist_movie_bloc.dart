@@ -27,17 +27,7 @@ class WatchlistMovieBloc
       AddFilmToWatchlist event, Emitter<WatchlistMovieState> emit) async {
     emit(LoadingAddToWatchlistState());
     if (event.film.fav!) {
-      final response = await _addToWatchlist.call(event.film);
-      response.fold(
-        (failure) {
-          emit(ErrorGetWatchlistState(message: failure.toString()));
-        },
-        (data) {
-          emit(SuccessAddToWatchlistState(message: data));
-          add(GenerateWatchListMovies());
-        },
-      );
-    } else {
+      event.film.fav = !event.film.fav!;
       final response = await _removeWatchlist.call(event.film);
       response.fold(
         (failure) {
@@ -49,6 +39,18 @@ class WatchlistMovieBloc
           add(GenerateWatchListMovies());
         },
       );
+    } else {
+      event.film.fav = !event.film.fav!;
+      final response = await _addToWatchlist.call(event.film);
+      response.fold(
+        (failure) {
+          emit(ErrorGetWatchlistState(message: failure.toString()));
+        },
+        (data) {
+          emit(SuccessAddToWatchlistState(message: data));
+          add(GenerateWatchListMovies());
+        },
+      );
     }
   }
 
@@ -56,10 +58,9 @@ class WatchlistMovieBloc
       GenerateWatchListMovies event, Emitter<WatchlistMovieState> emit) async {
     emit(LoadingGenerateWatchlistState());
     final response = await _getWatchlistMovie.call();
-
     response.fold(
       (failure) {
-        return failure.toString();
+        emit(ErrorGetWatchlistState(message: failure.message));
       },
       (film) {
         emit(SuccesGetWatchlistState(film: film));

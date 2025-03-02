@@ -10,5 +10,5 @@ import 'package:clean_architecture_movie_app/features/movie/data/datasources/rem
 void main() async {
   final resposne = await RemoteDataSorcesImpl().getTopRatedMovies();
 
-  print(resposne);
+  // print(resposne);
 }

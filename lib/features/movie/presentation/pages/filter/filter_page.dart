@@ -72,8 +72,7 @@ class FilterPage extends StatelessWidget {
                               return current is FilterMovieSuccessState;
                             },
                             builder: (context, state) {
-                              if (state.runtimeType ==
-                                  FilterMovieSuccessState) {
+                              if (state is FilterMovieSuccessState) {
                                 state as FilterMovieSuccessState;
                                 return SizedBox(
                                   height: 200,
@@ -196,14 +195,13 @@ class FilterPage extends StatelessWidget {
                     ),
                   ),
                 builder: (context, state) {
-                  if (state.runtimeType == FilterMovieLoadingState) {
+                  if (state is FilterMovieLoadingState) {
                     return const Center(
                       child: CupertinoActivityIndicator(
                         color: AppColor.primary,
                       ),
                     );
-                  } else if (state.runtimeType == FilterMovieSuccessState) {
-                    state as FilterMovieSuccessState;
+                  } else if (state is FilterMovieSuccessState) {
                     return Column(
                       children: [
                         Align(
@@ -231,6 +229,8 @@ class FilterPage extends StatelessWidget {
                                     DetailPage(film: data),
                                   );
                                 },
+                                likeTap: () {},
+                                status: false,
                               );
                             },
                           ),
