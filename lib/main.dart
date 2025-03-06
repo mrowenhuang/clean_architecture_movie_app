@@ -53,7 +53,8 @@ class MyApp extends StatelessWidget {
             ),
         ),
         BlocProvider(
-          create: (context) => sl<TrendingMovieBloc>(),
+          create: (context) =>
+              sl<TrendingMovieBloc>()..add(GenerateTrendingMovieEvent()),
         ),
       ],
       child: MaterialApp(

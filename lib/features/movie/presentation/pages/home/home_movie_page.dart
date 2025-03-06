@@ -461,7 +461,7 @@ class HomeMoviePage extends StatelessWidget {
       child: BlocBuilder<WatchlistMovieBloc, WatchlistMovieState>(
         builder: (context, watchListState) {
           return BlocBuilder<TrendingMovieBloc, TrendingMovieState>(
-            bloc: context.read<TrendingMovieBloc>()..add(GenerateTrendingMovieEvent()),
+            bloc: context.read<TrendingMovieBloc>(),
             builder: (context, state) {
               if (state is LoadingTrendingMovieState) {
                 return const Center(
