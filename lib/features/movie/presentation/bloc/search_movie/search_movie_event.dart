@@ -12,3 +12,9 @@ final class GenerateSearchMovie extends SearchMovieEvent {
 
   const GenerateSearchMovie({required this.keyword});
 }
+
+final class GeneratePaginationSearchMovie extends SearchMovieEvent {
+  final String keyword;
+
+  const GeneratePaginationSearchMovie({required this.keyword});
+}

@@ -6,8 +6,9 @@ import 'package:clean_architecture_movie_app/features/movie/data/models/search_f
 import 'package:dio/dio.dart';
 
 abstract class RemoteDataSorces {
-  Future<List<FilmModels>> getTopRatedMovies();
-  Future<List<FilmModels>> getPopularMovies();
+  Future<List<FilmModels>> getTopRatedMovies({String page = "1"});
+  Future<List<FilmModels>> getPopularMovies({String page = "1"});
+  Future<List<FilmModels>> getTrendingMovies({String page = "1"});
   Future<SearchFilmModels> getSearchMovies(String movieName,
       {String page = "1"});
   Future<SearchFilmModels> getLanguageMovies(
@@ -18,8 +19,8 @@ class RemoteDataSorcesImpl implements RemoteDataSorces {
   final Dio _dioConn = DioConn.dio;
 
   @override
-  Future<List<FilmModels>> getTopRatedMovies() async {
-    final response = await _dioConn.get(ApiNetwork.topRated);
+  Future<List<FilmModels>> getTopRatedMovies({String page = "1"}) async {
+    final response = await _dioConn.get(ApiNetwork.topRatedMovie(page: page));
 
     if (response.statusCode == 200) {
       final List<FilmModels> filmData = (response.data['results'] as List).map(
@@ -35,8 +36,8 @@ class RemoteDataSorcesImpl implements RemoteDataSorces {
   }
 
   @override
-  Future<List<FilmModels>> getPopularMovies() async {
-    final response = await _dioConn.get(ApiNetwork.popular);
+  Future<List<FilmModels>> getPopularMovies({String page = "1"}) async {
+    final response = await _dioConn.get(ApiNetwork.popularMovie(page: page));
     if (response.statusCode == 200) {
       final List<FilmModels> filmData = (response.data['results'] as List).map(
         (film) {
@@ -72,6 +73,23 @@ class RemoteDataSorcesImpl implements RemoteDataSorces {
 
     if (response.statusCode == 200) {
       final SearchFilmModels filmData = SearchFilmModels.fromMap(response.data);
+
+      return filmData;
+    } else {
+      throw ServerException();
+    }
+  }
+
+  @override
+  Future<List<FilmModels>> getTrendingMovies({String page = "1"}) async {
+    final response = await _dioConn.get(ApiNetwork.trendingMovie(page: page));
+
+    if (response.statusCode == 200) {
+      final List<FilmModels> filmData = (response.data["results"] as List).map(
+        (film) {
+          return FilmModels.fromMap(film);
+        },
+      ).toList();
 
       return filmData;
     } else {

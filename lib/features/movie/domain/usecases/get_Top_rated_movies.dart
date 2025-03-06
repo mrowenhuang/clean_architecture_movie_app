@@ -8,7 +8,7 @@ class GetTopRatedMovies {
 
   GetTopRatedMovies(this._movieRepository);
 
-  Future<Either<Failure, List<FilmEntities>>> call() async {
-    return await _movieRepository.getTopRatedMovies();
+  Future<Either<Failure, List<FilmEntities>>> call({String page = "1"}) async {
+    return await _movieRepository.getTopRatedMovies(page: page);
   }
 }

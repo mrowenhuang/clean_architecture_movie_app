@@ -10,12 +10,10 @@ sealed class FilterMovieEvent extends Equatable {
 final class GetFilterMovieEvent extends FilterMovieEvent {
   final String language;
   final String year;
-  final String page;
 
   const GetFilterMovieEvent({
     required this.language,
     required this.year,
-    required this.page,
   });
 }
 
@@ -29,4 +27,8 @@ final class GenerateYearMovieEvent extends FilterMovieEvent {
   final String year;
 
   const GenerateYearMovieEvent({required this.year});
+}
+
+final class GeneratePaginationFilterMovie extends FilterMovieEvent {
+
 }

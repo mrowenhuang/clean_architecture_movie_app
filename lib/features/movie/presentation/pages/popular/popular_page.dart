@@ -10,8 +10,33 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 
-class PopularPage extends StatelessWidget {
+class PopularPage extends StatefulWidget {
   const PopularPage({super.key});
+
+  @override
+  State<PopularPage> createState() => _PopularPageState();
+}
+
+class _PopularPageState extends State<PopularPage> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _scrollController.addListener(_scrolCall);
+  }
+
+  void _scrolCall() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) {
+          context.read<PopularMovieBloc>().add(GeneratePaginationPopularMovie());
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,56 +66,67 @@ class PopularPage extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 20),
-            Expanded(
-              child: BlocBuilder<PopularMovieBloc, PopularMovieState>(
-                bloc: context.read<PopularMovieBloc>(),
-                builder: (context, state) {
-                  if (state is PopularMovieLoadingState) {
-                    return const Center(
-                      child: CupertinoActivityIndicator(
-                        color: AppColor.primary,
-                      ),
-                    );
-                  } else if (state is PopularMovieSuccessState) {
-                    return ListView.builder(
-                      itemCount: state.films.length,
-                      itemBuilder: (context, index) {
-                        var data = state.films[index];
-                        return BlocConsumer<WatchlistMovieBloc,
-                            WatchlistMovieState>(
-                          listener: (context, state) {
-                            print(state);
-                          },
-                          builder: (context, state) {
-                            return CustomMovieList(
-                              ontap: () {
-                                AppNavigator.push(
-                                    context, DetailPage(film: data));
-                              },
-                              title: data.title.toString(),
-                              overview: data.overview.toString(),
-                              date: data.releaseDate.toString(),
-                              poster: data.posterPath.toString(),
-                              language: data.originalLanguage.toString(),
-                              likeTap: () {
-                                context
-                                    .read<WatchlistMovieBloc>()
-                                    .add(AddFilmToWatchlist(film: data));
-                              },
-                              status: data.fav!,
-                            );
-                          },
-                        );
-                      },
-                    );
-                  }
-                  return const SizedBox();
-                },
-              ),
-            ),
+            _popularResult(context),
           ],
         ),
       ),
     );
   }
+
+  // info : Popular Result Area
+  Widget _popularResult(BuildContext context) {
+    return Expanded(
+      child: BlocBuilder<PopularMovieBloc, PopularMovieState>(
+        builder: (context, state) {
+          if (state is PopularMovieLoadingState) {
+            return const Center(
+              child: CupertinoActivityIndicator(
+                color: AppColor.primary,
+              ),
+            );
+          } else if (state is PopularMovieSuccessState) {
+            return ClipRRect(
+              borderRadius: BorderRadius.circular(10),
+              child: ListView.builder(
+                itemCount: state.films.length,
+                controller: _scrollController,
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (context, index) {
+                  var data = state.films[index];
+                  return BlocBuilder<WatchlistMovieBloc, WatchlistMovieState>(
+                    builder: (context, state) {
+                      if (state is SuccesGetWatchlistState) {
+                        data.fav =
+                            state.film.any((element) => element.id == data.id)
+                                ? true
+                                : false;
+                      }
+                      return CustomMovieList(
+                        ontap: () {
+                          AppNavigator.push(context, DetailPage(film: data));
+                        },
+                        title: data.title.toString(),
+                        overview: data.overview.toString(),
+                        date: data.releaseDate.toString(),
+                        poster: data.posterPath.toString(),
+                        language: data.originalLanguage.toString(),
+                        likeTap: () {
+                          context
+                              .read<WatchlistMovieBloc>()
+                              .add(AddFilmToWatchlist(film: data));
+                        },
+                        status: data.fav!,
+                      );
+                    },
+                  );
+                },
+              ),
+            );
+          }
+          return const SizedBox();
+        },
+      ),
+    );
+  }
+
 }

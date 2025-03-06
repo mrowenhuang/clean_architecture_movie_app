@@ -14,7 +14,6 @@ class LocalDataSourcesImpl implements LocalDataSources {
 
   @override
   Future<Either<ServerFailure, List<FilmModels>>> getWatchListMovies() async {
-    print(_box.get("watchlist"));
     if ((_box.get("watchlist")) == null) {
       return left(ServerFailure(message: "No Watchlist"));
     } else {

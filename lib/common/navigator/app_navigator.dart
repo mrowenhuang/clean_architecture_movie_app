@@ -9,4 +9,13 @@ class AppNavigator {
       ),
     );
   }
+
+  static void pushRemove(BuildContext context, Widget widget) {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) => widget,
+      ),
+    );
+  }
 }

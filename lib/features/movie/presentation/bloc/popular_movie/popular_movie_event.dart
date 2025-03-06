@@ -9,3 +9,5 @@ sealed class PopularMovieEvent extends Equatable {
 
 
 final class GeneratePopularMovie extends PopularMovieEvent {}
+
+final class GeneratePaginationPopularMovie extends PopularMovieEvent {}

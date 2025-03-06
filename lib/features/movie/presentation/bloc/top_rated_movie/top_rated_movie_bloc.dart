@@ -10,9 +10,12 @@ part 'top_rated_movie_state.dart';
 
 class TopRatedMovieBloc extends Bloc<TopRatedMovieEvent, TopRatedMovieState> {
   final GetTopRatedMovies _getTopRatedMovies;
+  int page = 1;
+  List<FilmEntities> listFilm = [];
 
   TopRatedMovieBloc(this._getTopRatedMovies) : super(MovieInitial()) {
     on<GenerateTopRatedMovie>(getTopRatedMovie);
+    on<GeneratePaginationTopRatedMovie>(generatePaginationTopRatedMovie);
   }
 
   FutureOr<void> getTopRatedMovie(
@@ -30,8 +33,35 @@ class TopRatedMovieBloc extends Bloc<TopRatedMovieEvent, TopRatedMovieState> {
         );
       },
       (films) {
+        listFilm = films;
         emit(
           TopRatedMovieSuccessState(films: films),
+        );
+      },
+    );
+  }
+
+  FutureOr<void> generatePaginationTopRatedMovie(
+      GeneratePaginationTopRatedMovie event,
+      Emitter<TopRatedMovieState> emit) async {
+    page = page + 1;
+    final response = await _getTopRatedMovies(page: page.toString());
+    response.fold(
+      (failure) {
+        emit(
+          TopRatedMovieErrorState(
+            message: failure.toString(),
+          ),
+        );
+      },
+      (films) {
+        emit(TopRatedMovieLoadingState());
+
+        for (var element in films) {
+          listFilm.add(element);
+        }
+        emit(
+          TopRatedMovieSuccessState(films: listFilm),
         );
       },
     );

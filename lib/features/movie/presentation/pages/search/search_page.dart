@@ -2,6 +2,7 @@ import 'package:clean_architecture_movie_app/common/navigator/app_navigator.dart
 import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
 import 'package:clean_architecture_movie_app/core/configs/app_theme.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/search_movie/search_movie_bloc.dart';
+import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/watchlist/bloc/watchlist_movie_bloc.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/pages/detail/detail_page.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/custom_movie_list.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/widgets/search_field.dart';
@@ -9,10 +10,37 @@ import 'package:clean_architecture_movie_app/features/movie/presentation/widgets
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class SearchPage extends StatelessWidget {
-  SearchPage({super.key});
+class SearchPage extends StatefulWidget {
+  const SearchPage({super.key});
 
+  @override
+  State<SearchPage> createState() => _SearchPageState();
+}
+
+class _SearchPageState extends State<SearchPage> {
   final TextEditingController searchCont = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _scrollController.addListener(_scrollCall);
+  }
+
+  void _scrollCall() {
+    if (_scrollController.position.pixels ==
+        _scrollController.position.maxScrollExtent) {
+      WidgetsBinding.instance.addPostFrameCallback(
+        (_) {
+          context.read<SearchMovieBloc>().add(
+                GeneratePaginationSearchMovie(keyword: searchCont.text),
+              );
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,6 +96,7 @@ class SearchPage extends StatelessWidget {
     );
   }
 
+  // info : Result Area
   Widget _result(BuildContext context) {
     return BlocBuilder<SearchMovieBloc, SearchMovieState>(
       bloc: context.read<SearchMovieBloc>(),
@@ -90,51 +119,96 @@ class SearchPage extends StatelessWidget {
     );
   }
 
+  // info : Result Area Filter
   Widget _resultArea(BuildContext context) {
     return Expanded(
-      child: BlocBuilder<SearchMovieBloc, SearchMovieState>(
-        bloc: context.read<SearchMovieBloc>(),
-        builder: (context, state) {
-          if (state is SearchMovieInitial) {
-            return const Center(
-              child: CustomText(
-                text: "Try Searching",
-                color: AppColor.secondary,
-                fontWeight: FontWeight.bold,
-                fontsize: 14,
+      child: BlocConsumer<WatchlistMovieBloc, WatchlistMovieState>(
+        listener: (context, watchListState) {
+          if (watchListState is SuccessAddToWatchlistState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                duration: const Duration(seconds: 1),
+                backgroundColor: AppColor.primary,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                content: Text(watchListState.message),
               ),
             );
-          } else if (state is SearchMovieLoadingState) {
-            return const Center(
-              child: CircularProgressIndicator(
-                color: AppColor.primary,
+          } else if (watchListState is SuccesRemoveWatchlistState) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                duration: const Duration(seconds: 1),
+                backgroundColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                content: Text(watchListState.message),
               ),
-            );
-          } else if (state is SearchMovieSuccesState) {
-            return ListView.builder(
-              scrollDirection: Axis.vertical,
-              physics: const BouncingScrollPhysics(),
-              itemCount: state.films.results!.length,
-              itemBuilder: (context, index) {
-                var data = state.films.results![index];
-                return CustomMovieList(
-                  ontap: () {
-                    AppNavigator.push(
-                      context,
-                      DetailPage(film: data),
-                    );
-                  },
-                  title: data.title.toString(),
-                  overview: data.overview.toString(),
-                  date: data.releaseDate.toString(),
-                  poster: data.posterPath.toString(),
-                  language: data.originalLanguage.toString(),
-                  likeTap: () {}, status: false,
-                );
-              },
             );
           }
-          return const SizedBox();
+        },
+        bloc: context.read<WatchlistMovieBloc>()
+          ..add(GenerateWatchListMovies()),
+        builder: (context, watchListState) {
+          return BlocBuilder<SearchMovieBloc, SearchMovieState>(
+            bloc: context.read<SearchMovieBloc>(),
+            builder: (context, state) {
+              if (state is SearchMovieInitial) {
+                return const Center(
+                  child: CustomText(
+                    text: "Try Searching",
+                    color: AppColor.secondary,
+                    fontWeight: FontWeight.bold,
+                    fontsize: 14,
+                  ),
+                );
+              } else if (state is SearchMovieLoadingState) {
+                return const Center(
+                  child: CircularProgressIndicator(
+                    color: AppColor.primary,
+                  ),
+                );
+              } else if (state is SearchMovieSuccesState) {
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(10),
+                  child: ListView.builder(
+                    controller: _scrollController,
+                    scrollDirection: Axis.vertical,
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: state.films.results!.length,
+                    itemBuilder: (context, index) {
+                      final data = state.films.results![index];
+                      if (watchListState is SuccesGetWatchlistState) {
+                        data.fav = watchListState.film
+                                .any((element) => element.id == data.id)
+                            ? true
+                            : false;
+                      }
+                      return CustomMovieList(
+                        ontap: () {
+                          AppNavigator.push(
+                            context,
+                            DetailPage(film: data),
+                          );
+                        },
+                        title: data.title.toString(),
+                        overview: data.overview.toString(),
+                        date: data.releaseDate.toString(),
+                        poster: data.posterPath.toString(),
+                        language: data.originalLanguage.toString(),
+                        likeTap: () {
+                          context
+                              .read<WatchlistMovieBloc>()
+                              .add(AddFilmToWatchlist(film: data));
+                        },
+                        status: data.fav!,
+                      );
+                    },
+                  ),
+                );
+              }
+              return const SizedBox();
+            },
+          );
         },
       ),
     );

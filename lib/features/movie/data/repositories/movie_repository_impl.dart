@@ -18,9 +18,11 @@ class MovieRepositoryImpl implements MovieRepository {
       this._remoteDataSorces, this._box, this._localDataSources);
 
   @override
-  Future<Either<ServerFailure, List<FilmEntities>>> getTopRatedMovies() async {
+  Future<Either<ServerFailure, List<FilmEntities>>> getTopRatedMovies(
+      {String page = "1"}) async {
     try {
-      final List<FilmModels> film = await _remoteDataSorces.getTopRatedMovies();
+      final List<FilmModels> film =
+          await _remoteDataSorces.getTopRatedMovies(page: page);
       return right(film);
     } catch (e) {
       return left(
@@ -30,10 +32,11 @@ class MovieRepositoryImpl implements MovieRepository {
   }
 
   @override
-  Future<Either<ServerFailure, List<FilmEntities>>> getPopularMovies() async {
+  Future<Either<ServerFailure, List<FilmEntities>>> getPopularMovies(
+      {String page = "1"}) async {
     try {
       final List<FilmEntities> film =
-          await _remoteDataSorces.getPopularMovies();
+          await _remoteDataSorces.getPopularMovies(page: page);
       return right(film);
     } catch (e) {
       return left(ServerFailure(message: e.toString()));
@@ -126,7 +129,26 @@ class MovieRepositoryImpl implements MovieRepository {
       _box.put("watchlist", filmData);
       return right("Remove From Watchlist");
     } catch (e) {
-      return left(ServerFailure(message: e.toString()));
+      return left(
+        ServerFailure(
+          message: e.toString(),
+        ),
+      );
+    }
+  }
+
+  @override
+  Future<Either<ServerFailure, List<FilmEntities>>> getTrendingMovies(
+      {String page = "1"}) async {
+    try {
+      final response = await _remoteDataSorces.getTrendingMovies(page: page);
+      return right(response);
+    } catch (e) {
+      return left(
+        ServerFailure(
+          message: e.toString(),
+        ),
+      );
     }
   }
 }
