@@ -14,12 +14,12 @@ Hello this movie app project is my first project using **Bloc State Management**
 <img src="https://github.com/mrowenhuang/clean_architecture_movie_app/blob/3c3a377b48f624edc35a29a8ea25c83efed67fd7/preview/search.png" width="200" height="400" />
 
 **Filter Page**
-<img src="https://github.com/mrowenhuang/clean_architecture_movie_app/blob/3c3a377b48f624edc35a29a8ea25c83efed67fd7/preview/filter.pngg" width="200" height="400" />
+<img src="https://github.com/mrowenhuang/clean_architecture_movie_app/blob/3c3a377b48f624edc35a29a8ea25c83efed67fd7/preview/filter.png" width="200" height="400" />
 
 **Watchlist Page**
 <img src="https://github.com/mrowenhuang/clean_architecture_movie_app/blob/3c3a377b48f624edc35a29a8ea25c83efed67fd7/preview/watchlist.png" width="200" height="400" />
 
 **Mockup**
-<img src="https://github.com/mrowenhuang/clean_architecture_movie_app/blob/dae15a46f11a4c3e139a3af36dcda937e82d52b4/preview/download.png" width="400" height="600" />
+<img src="https://github.com/mrowenhuang/clean_architecture_movie_app/blob/dae15a46f11a4c3e139a3af36dcda937e82d52b4/preview/download.png" width="800" height="600" />
 ## You can Support me at
 My Likedin [LinkedIn](https://pages.github.com/).
