@@ -143,7 +143,7 @@ class _FilterPageState extends State<FilterPage> {
         );
       },
       style: ElevatedButton.styleFrom(
-        fixedSize: Size(100, 45),
+        fixedSize: const Size(100, 45),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(
             10,

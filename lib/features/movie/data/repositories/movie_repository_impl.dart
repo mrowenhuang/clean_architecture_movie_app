@@ -104,19 +104,22 @@ class MovieRepositoryImpl implements MovieRepository {
 
   @override
   Future<Either<ServerFailure, List<FilmEntities>>> getWatchListMovies() async {
-    final response = await _localDataSources.getWatchListMovies();
+    try {
+      final response = await _localDataSources.getWatchListMovies();
 
-    return response.fold(
-      (failure) {
-        print(failure.message);
-        return left(ServerFailure(message: failure.message));
-      },
-      (film) {
-        filmData = film;
+      return response.fold(
+        (failure) {
+          return left(ServerFailure(message: failure.message));
+        },
+        (film) {
+          filmData = film;
 
-        return right(film);
-      },
-    );
+          return right(film);
+        },
+      );
+    } catch (e) {
+      return left(ServerFailure(message: e.toString()));
+    }
   }
 
   @override

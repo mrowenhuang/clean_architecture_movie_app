@@ -52,19 +52,25 @@ class WatchlistPage extends StatelessWidget {
   Widget _whistlistResult(BuildContext context) {
     return Expanded(
       child: BlocConsumer<WatchlistMovieBloc, WatchlistMovieState>(
-        listener: (context, state) {
-          // print(state);
-          if (state is SuccessAddToWatchlistState) {
+        listener: (context, watchListState) {
+          if (watchListState is SuccessAddToWatchlistState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                duration: Duration(seconds: 1),
-                content: Text(state.message),
+                duration: const Duration(seconds: 1),
+                backgroundColor: AppColor.primary,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                content: Text(watchListState.message),
               ),
             );
-          } else if (state is SuccesRemoveWatchlistState) {
+          } else if (watchListState is SuccesRemoveWatchlistState) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text(state.message),
+                duration: const Duration(seconds: 1),
+                backgroundColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10)),
+                content: Text(watchListState.message),
               ),
             );
           }

@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:convert';
 
+import 'package:clean_architecture_movie_app/core/change/genre.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 import 'package:clean_architecture_movie_app/features/movie/domain/entities/film_entities.dart';
@@ -9,48 +10,63 @@ part 'film_models.g.dart';
 
 @HiveType(typeId: 1)
 class FilmModels extends FilmEntities {
+  @override
   @HiveField(0)
   final String? backdropPath;
 
+  @override
   @HiveField(1)
-  final List<int>? genreIds;
+  final List<String>? genreIds;
 
+  @override
   @HiveField(2)
   final int? id;
 
+  @override
   @HiveField(3)
   final String? originalLanguage;
 
+  @override
   @HiveField(4)
   final String? originalTitle;
 
+  @override
   @HiveField(5)
   final String? overview;
 
+  @override
   @HiveField(6)
   final double? popularity;
 
+  @override
   @HiveField(7)
   final String? posterPath;
 
+  @override
   @HiveField(8)
   final String? releaseDate;
 
+  @override
   @HiveField(9)
   final String? title;
 
+  @override
   @HiveField(10)
   final String? description;
 
+  @override
   @HiveField(11)
   final bool? video;
 
+  @override
   @HiveField(12)
   bool? fav;
 
+  @override
   @HiveField(13)
   final double? voteAverage;
 
+  @override
   @HiveField(14)
   final int? voteCount;
 
@@ -113,7 +129,8 @@ class FilmModels extends FilmEntities {
       backdropPath:
           map['backdrop_path'] != null ? map['backdrop_path'] as String : null,
       genreIds: map['genre_ids'] != null
-          ? (map['genre_ids'] as List).map((e) => (e as num).toInt()).toList()
+          ? Genre().genreConverter(
+              (map['genre_ids'] as List).map((e) => e.toString()).toList())
           : null,
       id: map['id'] != null ? map['id'] as int : null,
       originalLanguage: map['original_language'] != null

@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:clean_architecture_movie_app/common/navigator/app_navigator.dart';
+import 'package:clean_architecture_movie_app/core/change/genre.dart';
 import 'package:clean_architecture_movie_app/core/configs/app_color.dart';
 import 'package:clean_architecture_movie_app/core/configs/app_theme.dart';
 import 'package:clean_architecture_movie_app/features/movie/presentation/bloc/page_control/cubit/page_control_cubit.dart';
@@ -271,34 +272,6 @@ class HomeMoviePage extends StatelessWidget {
                                   height: 100,
                                   width: 180,
                                 ),
-                                // Positioned(
-                                //   right: 0,
-                                //   child: Container(
-                                //     width: 60,
-                                //     height: 25,
-                                //     decoration: const BoxDecoration(
-                                //       boxShadow: [
-                                //         BoxShadow(
-                                //           blurRadius: 8,
-                                //           color: AppColor.shadow,
-                                //           offset: Offset(0, 4),
-                                //         ),
-                                //       ],
-                                //       color: AppColor.primary,
-                                //       borderRadius: BorderRadius.only(
-                                //         bottomLeft: Radius.circular(5),
-                                //       ),
-                                //     ),
-                                //     alignment: Alignment.center,
-                                //     child: const Text(
-                                //       "9:00",
-                                //       style: TextStyle(
-                                //         color: AppColor.secondary,
-                                //         fontSize: 12,
-                                //       ),
-                                //     ),
-                                //   ),
-                                // ),
                               ],
                             ),
                           ),
@@ -710,10 +683,17 @@ class HomeMoviePage extends StatelessWidget {
                                             ],
                                           ),
                                           const SizedBox(height: 5),
-                                          const CustomText(
-                                            text: "Genre",
-                                            color: AppColor.primary,
-                                            fontsize: 11,
+                                          Wrap(
+                                            spacing: 5,
+                                            children: data.genreIds!
+                                                .map(
+                                                  (e) => CustomText(
+                                                    text: e,
+                                                    color: AppColor.primary,
+                                                    fontsize: 11,
+                                                  ),
+                                                )
+                                                .toList(),
                                           ),
                                           const SizedBox(height: 15),
                                           Text(

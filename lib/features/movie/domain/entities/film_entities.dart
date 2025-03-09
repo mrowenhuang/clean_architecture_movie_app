@@ -3,7 +3,7 @@ import 'package:equatable/equatable.dart';
 // ignore: must_be_immutable
 class FilmEntities extends Equatable {
   String? backdropPath;
-  List<int>? genreIds;
+  List<String>? genreIds;
   int? id;
   String? originalLanguage;
   String? originalTitle;

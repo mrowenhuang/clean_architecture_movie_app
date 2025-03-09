@@ -18,7 +18,8 @@ class FilmModelsAdapter extends TypeAdapter<FilmModels> {
     };
     return FilmModels(
       backdropPath: fields[0] as String?,
-      genreIds: (fields[1] as List?)?.cast<int>(),
+      genreIds:
+          (fields[1] as List<dynamic>?)?.map((e) => e.toString()).toList(),
       id: fields[2] as int?,
       originalLanguage: fields[3] as String?,
       originalTitle: fields[4] as String?,

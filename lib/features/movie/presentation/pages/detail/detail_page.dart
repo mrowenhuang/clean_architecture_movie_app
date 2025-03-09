@@ -21,8 +21,8 @@ class DetailPage extends StatelessWidget {
       body: BlocBuilder<WatchlistMovieBloc, WatchlistMovieState>(
         builder: (context, state) {
           return SlidingUpPanel(
-            borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-            padding: EdgeInsets.only(top: 10, right: 20, left: 20),
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+            padding: const EdgeInsets.only(top: 10, right: 20, left: 20),
             color: AppColor.secondary,
             panel: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,9 +46,17 @@ class DetailPage extends StatelessWidget {
                   color: AppColor.primary,
                 ),
                 const SizedBox(height: 5),
-                const CustomText(
-                  text: "Genre",
-                  color: AppColor.primary,
+                Wrap(
+                  spacing: 8,
+                  children: film.genreIds!
+                      .map(
+                        (e) => CustomText(
+                          text: e,
+                          color: AppColor.primary,
+                          fontsize: 11,
+                        ),
+                      )
+                      .toList(),
                 ),
                 const SizedBox(height: 5),
                 CustomText(
