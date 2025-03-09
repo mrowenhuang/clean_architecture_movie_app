@@ -23,4 +23,4 @@ Hello this movie app project is my first project using **Bloc State Management**
 <img src="https://github.com/mrowenhuang/clean_architecture_movie_app/blob/dae15a46f11a4c3e139a3af36dcda937e82d52b4/preview/download.png" width="1000" height="600" />
 
 ## You can Support me at
-My Likedin [LinkedIn](https://www.linkedin.com/in/owen-huang-582b12213?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BlhzKVmW2QYCUqSnx4cd4pg%3D%3D).
+My Likedin 🚀 [LinkedIn](https://www.linkedin.com/in/owen-huang-582b12213?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BlhzKVmW2QYCUqSnx4cd4pg%3D%3D).
